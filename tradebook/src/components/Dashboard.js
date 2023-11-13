@@ -5,10 +5,14 @@ import RecentTrades from "./RecentTrades";
 
 const Dashboard = () => {
   return (
-    <div>
+    <div className="flex">
+      <div className="flex flex-col">
       <Navigation />
-      <TradeHistory />
-      <RecentTrades />
+      </div>
+      <div className="flex-1 p-4">
+        <TradeHistory />
+        <RecentTrades />
+      </div>
     </div>
   );
 };
