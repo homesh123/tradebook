@@ -7,6 +7,7 @@ import TradeForm from "./components/TradeForm";
 import AnalyticsDashboard from "./components/AnalyticsDashboard";
 import CalendarView from "./components/CalendarView";
 import ImportExport from "./components/ImportExport";
+import MistakesInsights from "./components/MistakesInsights";
 import SampleDataLoader from "./components/SampleDataLoader";
 import { useTrades } from "./context/TradeContext";
 
@@ -49,6 +50,8 @@ const MainApp = () => {
         return <><SampleDataLoader /><Overview onAddTrade={() => setShowTradeForm(true)} /></>;
       case 'trades':
         return <TradeLog />;
+      case 'mistakes':
+        return <MistakesInsights />;
       case 'analytics':
         return <AnalyticsDashboard trades={trades} />;
       case 'calendar':
@@ -90,6 +93,7 @@ const MainApp = () => {
           <nav className="p-3">
             <NavItem active={activeTab === 'overview'} onClick={() => handleNavClick('overview')} icon="🏠">Overview</NavItem>
             <NavItem active={activeTab === 'trades'} onClick={() => handleNavClick('trades')} icon="📋">Trade Log</NavItem>
+            <NavItem active={activeTab === 'mistakes'} onClick={() => handleNavClick('mistakes')} icon="🎯">Mistakes</NavItem>
             <NavItem active={activeTab === 'analytics'} onClick={() => handleNavClick('analytics')} icon="📈">Analytics</NavItem>
             <NavItem active={activeTab === 'calendar'} onClick={() => handleNavClick('calendar')} icon="📅">Calendar</NavItem>
             <NavItem active={activeTab === 'import'} onClick={() => handleNavClick('import')} icon="💾">Import & Export</NavItem>
@@ -113,6 +117,7 @@ const MainApp = () => {
         <nav className="flex-1 px-3">
           <NavItem active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} icon="🏠">Overview</NavItem>
           <NavItem active={activeTab === 'trades'} onClick={() => setActiveTab('trades')} icon="📋">Trade Log</NavItem>
+          <NavItem active={activeTab === 'mistakes'} onClick={() => setActiveTab('mistakes')} icon="🎯">Mistakes</NavItem>
           <NavItem active={activeTab === 'analytics'} onClick={() => setActiveTab('analytics')} icon="📈">Analytics</NavItem>
           <NavItem active={activeTab === 'calendar'} onClick={() => setActiveTab('calendar')} icon="📅">Calendar</NavItem>
           <NavItem active={activeTab === 'import'} onClick={() => setActiveTab('import')} icon="💾">Import & Export</NavItem>
