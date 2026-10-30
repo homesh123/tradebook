@@ -2,6 +2,7 @@ import React from 'react';
 import { useTrades } from '../context/TradeContext';
 import { analyzeTrades, analyzeMistakes } from '../utils/analytics';
 import { calculateTradeMetrics } from '../utils/analytics';
+import { getAdvancedMetrics, getEmotionPerformance, getPlanAdherence } from '../utils/advancedAnalytics';
 
 const MetricCard = ({ label, value, subtext, trend }) => (
   <div className="bg-white dark:bg-apple-gray-800 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] border border-apple-gray-200 dark:border-apple-gray-700 hover:shadow-[0_4px_12px_rgba(0,0,0,0.04)] dark:hover:shadow-[0_4px_12px_rgba(0,0,0,0.4)] transition-all duration-200">
@@ -17,6 +18,9 @@ const Overview = ({ onAddTrade }) => {
   const { trades } = useTrades();
   const analytics = analyzeTrades(trades);
   const mistakes = analyzeMistakes(trades);
+  const advanced = getAdvancedMetrics(trades);
+  const emotionPerf = getEmotionPerformance(trades);
+  const planAdherence = getPlanAdherence(trades);
   
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
@@ -43,6 +47,14 @@ const Overview = ({ onAddTrade }) => {
         <MetricCard label="Profit Factor" value={analytics.profitFactor === Infinity ? '∞' : analytics.profitFactor.toFixed(2)} />
         <MetricCard label="Expectancy" value={formatCurrency(analytics.expectancy)} subtext="per trade" trend={analytics.expectancy >= 0 ? 'up' : 'down'} />
         <MetricCard label="Avg R-Multiple" value={`${analytics.avgRMultiple >= 0 ? '+' : ''}${analytics.avgRMultiple.toFixed(2)}R`} trend={analytics.avgRMultiple >= 0 ? 'up' : 'down'} />
+      </div>
+      
+      {/* Advanced Risk-Adjusted Metrics */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+        <MetricCard label="Sharpe Ratio" value={advanced.sharpeRatio.toFixed(2)} subtext="Risk-adjusted return" />
+        <MetricCard label="Recovery Factor" value={advanced.recoveryFactor.toFixed(2)} subtext="Profit / Max DD" />
+        <MetricCard label="Consistency Score" value={advanced.consistencyScore.toFixed(0)} subtext={`${advanced.profitableDays}/${advanced.tradingDays} days`} />
+        <MetricCard label="Max Streak" value={advanced.maxConsecutiveWins > advanced.maxConsecutiveLosses ? `+${advanced.maxConsecutiveWins}` : `-${advanced.maxConsecutiveLosses}`} subtext="W/L consecutive" />
       </div>
       
       <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
@@ -72,38 +84,57 @@ const Overview = ({ onAddTrade }) => {
           </div>
         </div>
         
-        {/* Recent Trades */}
+        {/* Plan Adherence */}
         <div className="bg-white dark:bg-apple-gray-800 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
           <div className="px-5 py-3.5 border-b border-apple-gray-200 dark:border-apple-gray-700 flex justify-between items-center">
-            <h2 className="text-[15px] font-semibold text-apple-gray-900 dark:text-white">Recent Trades</h2>
+            <h2 className="text-[15px] font-semibold text-apple-gray-900 dark:text-white">Plan Adherence</h2>
           </div>
-          <div className="divide-y divide-apple-gray-200 dark:divide-apple-gray-700">
-            {recentTrades.length === 0 ? (
-              <div className="p-5 text-center py-6">
-                <p className="text-[13px] text-apple-gray-500 dark:text-apple-gray-400">No trades yet. Add your first trade to get started.</p>
+          <div className="p-5">
+            <div className="flex justify-between items-center mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-[14px] text-apple-gray-900 dark:text-white font-medium">Followed Plan</span>
+                <span className="text-[12px] text-apple-green font-medium">{planAdherence.followed.count} trades</span>
               </div>
-            ) : (
-              recentTrades.map((trade, idx) => (
-                <div key={idx} className="px-5 py-3 flex justify-between items-center hover:bg-apple-gray-50 dark:hover:bg-apple-gray-700/40 transition-colors duration-150">
-                  <div className="flex items-center gap-3">
-                    <div>
-                      <div className="text-[13px] text-apple-gray-900 dark:text-white font-medium">{trade.pair}</div>
-                      <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 flex items-center gap-1.5">
-                        <span className={trade.side === 'long' ? 'text-apple-green' : 'text-apple-red'}>{trade.side.toUpperCase()}</span>
-                        <span>•</span>
-                        <span>{trade.date}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`text-[13px] font-medium tabular-nums ${trade.status === 'open' ? 'text-apple-gray-400' : trade.pnl > 0 ? 'text-apple-green' : 'text-apple-red'}`}>
-                    {trade.status === 'open' ? 'OPEN' : `${trade.pnl > 0 ? '+' : ''}${formatCurrency(trade.pnl)}`}
-                  </div>
-                </div>
-              ))
-            )}
+              <span className="text-[14px] text-apple-gray-900 dark:text-white font-medium">{planAdherence.followed.winRate.toFixed(0)}%</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-[14px] text-apple-gray-900 dark:text-white font-medium">Ignored Plan</span>
+                <span className="text-[12px] text-apple-red font-medium">{planAdherence.notFollowed.count} trades</span>
+              </div>
+              <span className={`text-[14px] font-medium ${planAdherence.notFollowed.winRate >= planAdherence.followed.winRate ? 'text-apple-green' : 'text-apple-red'}`}>
+                {planAdherence.notFollowed.winRate.toFixed(0)}%
+              </span>
+            </div>
           </div>
         </div>
       </div>
+      
+      {/* Emotion vs Performance */}
+      {emotionPerf.length > 0 && (
+        <div className="bg-white dark:bg-apple-gray-800 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
+          <div className="px-5 py-3.5 border-b border-apple-gray-200 dark:border-apple-gray-700 flex justify-between items-center">
+            <h2 className="text-[15px] font-semibold text-apple-gray-900 dark:text-white">Emotion vs Performance</h2>
+          </div>
+          <div className="p-5">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {emotionPerf.slice(0, 4).map((e, idx) => (
+                <div key={idx} className="flex items-center justify-between p-3 bg-apple-gray-50 dark:bg-apple-gray-800/50 rounded-lg">
+                  <div>
+                    <div className="text-[13px] font-medium text-apple-gray-900 dark:text-white capitalize">{e.emotion}</div>
+                    <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400">{e.count} trades ({e.winRate.toFixed(0)}% WR)</div>
+                  </div>
+                  <div className={`text-[14px] font-semibold ${e.avgPnl >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
+                    {formatCurrency(e.avgPnl)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Recent Trades */}
     </div>
   );
 };

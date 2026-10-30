@@ -23,6 +23,7 @@ const TradeForm = ({ onClose }) => {
     emotions: '',
     followedPlan: null
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -30,6 +31,9 @@ const TradeForm = ({ onClose }) => {
       ...prev,
       [name]: type === 'number' ? (value === '' ? '' : parseFloat(value)) : value
     }));
+    if (errors[name]) {
+      setErrors(prev => { const n = { ...prev }; delete n[name]; return n; });
+    }
   };
 
   const toggleArrayItem = (field, item) => {
@@ -41,8 +45,21 @@ const TradeForm = ({ onClose }) => {
     }));
   };
 
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.pair.trim()) newErrors.pair = 'Symbol is required';
+    if (!formData.entry && formData.entry !== 0) newErrors.entry = 'Entry price is required';
+    if (!formData.quantity || formData.quantity <= 0) newErrors.quantity = 'Quantity must be greater than 0';
+    if (formData.exit !== '' && formData.exit !== null && formData.exit <= 0) newErrors.exit = 'Exit price must be greater than 0';
+    if (formData.stopLoss !== '' && formData.stopLoss !== null && formData.stopLoss <= 0) newErrors.stopLoss = 'Stop loss must be greater than 0';
+    if (formData.takeProfit !== '' && formData.takeProfit !== null && formData.takeProfit <= 0) newErrors.takeProfit = 'Take profit must be greater than 0';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validate()) return;
     addTrade({
       ...formData,
       quantity: parseFloat(formData.quantity) || 1,
@@ -71,7 +88,8 @@ const TradeForm = ({ onClose }) => {
             </div>
             <div>
               <label className="block text-[12px] text-apple-gray-600 dark:text-apple-gray-400 mb-1.5">Symbol / Pair</label>
-              <input type="text" name="pair" value={formData.pair} onChange={handleChange} placeholder="BTC/USDT, AAPL" className="w-full px-3 py-2 rounded-lg bg-apple-gray-100 dark:bg-apple-gray-700 text-apple-gray-900 dark:text-white text-[13px] border border-transparent focus:border-apple-blue focus:bg-white dark:focus:bg-apple-gray-600 transition-colors placeholder:text-apple-gray-400" required />
+              <input type="text" name="pair" value={formData.pair} onChange={handleChange} placeholder="BTC/USDT, AAPL" className={`w-full px-3 py-2 rounded-lg ${errors.pair ? 'bg-apple-red/5 border-apple-red' : 'bg-apple-gray-100 dark:bg-apple-gray-700'} text-apple-gray-900 dark:text-white text-[13px] border border-apple-gray-200 dark:border-apple-gray-700 focus:border-apple-blue focus:bg-white dark:focus:bg-apple-gray-600 transition-colors placeholder:text-apple-gray-400`} required />
+              {errors.pair && <p className="text-[11px] text-apple-red mt-1">{errors.pair}</p>}
             </div>
           </div>
           
