@@ -8,15 +8,12 @@ const MetricCard = ({ label, value, subtext, trend, tooltip }) => (
   <div className="bg-white dark:bg-apple-gray-800 rounded-xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] border border-apple-gray-200 dark:border-apple-gray-700 hover:shadow-[0_4px_12px_rgba(0,0,0,0.04)] dark:hover:shadow-[0_4px_12px_rgba(0,0,0,0.4)] transition-all duration-200 group relative">
     <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wider mb-1.5 font-medium flex items-center gap-1">
       {label}
-      {tooltip && <span className="text-apple-gray-400 dark:text-apple-gray-600 text-[10px]" title={tooltip}>ℹ️</span>}
+      {tooltip && <span className="text-apple-gray-400 dark:text-apple-gray-600 text-[10px]" title={tooltip}>\u2139</span>}
     </div>
     <div className={`text-[24px] sm:text-[28px] font-semibold tracking-tight leading-none mb-1 ${trend === 'up' ? 'text-apple-green' : trend === 'down' ? 'text-apple-red' : 'text-apple-gray-900 dark:text-white'}`}>
       {value}
     </div>
     {subtext && <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 mt-1">{subtext}</div>}
-    {tooltip && <div className="absolute bottom-full left-0 right-0 mb-2 hidden group-hover:block z-10 bg-apple-gray-900 dark:bg-white text-white dark:text-apple-gray-900 text-[11px] px-2 py-1 rounded shadow-lg whitespace-nowrap">
-      {tooltip}
-    </div>
   </div>
 );
 
@@ -27,13 +24,13 @@ const Overview = ({ onAddTrade }) => {
   const advanced = getAdvancedMetrics(trades);
   const emotionPerf = getEmotionPerformance(trades);
   const planAdherence = getPlanAdherence(trades);
-  
+
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
   };
-  
+
   const recentTrades = trades.slice(0, 5).map(t => calculateTradeMetrics(t));
-  
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
@@ -45,24 +42,24 @@ const Overview = ({ onAddTrade }) => {
           + New Trade
         </button>
       </div>
-      
+
       {/* Quick Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
         <MetricCard label="Total P&L" value={formatCurrency(analytics.totalPnl)} trend={analytics.totalPnl >= 0 ? 'up' : 'down'} tooltip="Net profit/loss from all closed trades" />
-        <MetricCard label="Win Rate" value={`${analytics.winRate.toFixed(1)}%`} subtext={`${analytics.winningTrades}W · ${analytics.losingTrades}L`} tooltip="Percentage of trades that were profitable" />
-        <MetricCard label="Profit Factor" value={analytics.profitFactor === Infinity ? '∞' : analytics.profitFactor.toFixed(2)} tooltip="Total gross profit / total gross loss. Above 1 = profitable" />
+        <MetricCard label="Win Rate" value={`${analytics.winRate.toFixed(1)}%`} subtext={`${analytics.winningTrades}W \u00b7 ${analytics.losingTrades}L`} tooltip="Percentage of trades that were profitable" />
+        <MetricCard label="Profit Factor" value={analytics.profitFactor === Infinity ? '\u221E' : analytics.profitFactor.toFixed(2)} tooltip="Total gross profit / total gross loss. Above 1 = profitable" />
         <MetricCard label="Expectancy" value={formatCurrency(analytics.expectancy)} subtext="per trade" trend={analytics.expectancy >= 0 ? 'up' : 'down'} tooltip="Average profit/loss per trade. Positive = edge" />
         <MetricCard label="Avg R-Multiple" value={`${analytics.avgRMultiple >= 0 ? '+' : ''}${analytics.avgRMultiple.toFixed(2)}R`} trend={analytics.avgRMultiple >= 0 ? 'up' : 'down'} tooltip="Average profit expressed as multiple of risk (stop distance)" />
       </div>
-      
+
       {/* Advanced Risk-Adjusted Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
-        <MetricCard label="Sharpe Ratio" value={advanced.sharpeRatio.toFixed(2)} subtext="Risk-adjusted return" tooltip="Risk-adjusted return. Higher = better risk/reward. Above 1 = good" />
-        <MetricCard label="Recovery Factor" value={advanced.recoveryFactor.toFixed(2)} subtext="Profit / Max DD" tooltip="Total profit divided by max drawdown. Shows how quickly you recover losses" />
+        <MetricCard label="Sharpe Ratio" value={advanced.sharpeRatio.toFixed(2)} subtext="Risk-adjusted return" tooltip="Risk-adjusted return. Higher = better risk/reward" />
+        <MetricCard label="Recovery Factor" value={advanced.recoveryFactor.toFixed(2)} subtext="Profit / Max DD" tooltip="Total profit divided by max drawdown" />
         <MetricCard label="Consistency Score" value={advanced.consistencyScore.toFixed(0)} subtext={`${advanced.profitableDays}/${advanced.tradingDays} days`} tooltip="Percentage of trading days that were profitable" />
-        <MetricCard label="Max Streak" value={advanced.maxConsecutiveWins > advanced.maxConsecutiveLosses ? `+${advanced.maxConsecutiveWins}` : `-${advanced.maxConsecutiveLosses}`} subtext="W/L consecutive" tooltip="Longest consecutive winning or losing streak" />
+        <MetricCard label="Max Streak" value={advanced.maxConsecutiveWins >= advanced.maxConsecutiveLosses ? `+${advanced.maxConsecutiveWins}` : `-${advanced.maxConsecutiveLosses}`} subtext="W/L consecutive" tooltip="Longest consecutive winning or losing streak" />
       </div>
-      
+
       <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
         {/* Top Leak */}
         <div className="bg-white dark:bg-apple-gray-800 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
@@ -72,7 +69,7 @@ const Overview = ({ onAddTrade }) => {
           <div className="p-5">
             {mistakes.length === 0 ? (
               <div className="text-center py-6">
-                <div className="text-3xl mb-2">🎯</div>
+                <div className="text-3xl mb-2">&#127919;</div>
                 <p className="text-[13px] text-apple-gray-500 dark:text-apple-gray-400">No mistakes tracked yet. Tag mistakes on trades to identify your biggest leaks.</p>
               </div>
             ) : (
@@ -89,7 +86,7 @@ const Overview = ({ onAddTrade }) => {
             )}
           </div>
         </div>
-        
+
         {/* Plan Adherence */}
         <div className="bg-white dark:bg-apple-gray-800 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
           <div className="px-5 py-3.5 border-b border-apple-gray-200 dark:border-apple-gray-700 flex justify-between items-center">
@@ -115,7 +112,7 @@ const Overview = ({ onAddTrade }) => {
           </div>
         </div>
       </div>
-      
+
       {/* Emotion vs Performance */}
       {emotionPerf.length > 0 && (
         <div className="bg-white dark:bg-apple-gray-800 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
@@ -139,8 +136,38 @@ const Overview = ({ onAddTrade }) => {
           </div>
         </div>
       )}
-      
+
       {/* Recent Trades */}
+      <div className="bg-white dark:bg-apple-gray-800 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-apple-gray-200 dark:border-apple-gray-700 flex justify-between items-center">
+          <h2 className="text-[15px] font-semibold text-apple-gray-900 dark:text-white">Recent Trades</h2>
+        </div>
+        <div className="divide-y divide-apple-gray-200 dark:divide-apple-gray-700">
+          {recentTrades.length === 0 ? (
+            <div className="p-5 text-center py-6">
+              <p className="text-[13px] text-apple-gray-500 dark:text-apple-gray-400">No trades yet. Add your first trade to get started.</p>
+            </div>
+          ) : (
+            recentTrades.map((trade, idx) => (
+              <div key={idx} className="px-5 py-3 flex justify-between items-center hover:bg-apple-gray-50 dark:hover:bg-apple-gray-700/40 transition-colors duration-150">
+                <div className="flex items-center gap-3">
+                  <div>
+                    <div className="text-[13px] text-apple-gray-900 dark:text-white font-medium">{trade.pair}</div>
+                    <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 flex items-center gap-1.5">
+                      <span className={trade.side === 'long' ? 'text-apple-green' : 'text-apple-red'}>{trade.side.toUpperCase()}</span>
+                      <span>\u2022</span>
+                      <span>{trade.date}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className={`text-[13px] font-medium tabular-nums ${trade.status === 'open' ? 'text-apple-gray-400' : trade.pnl > 0 ? 'text-apple-green' : 'text-apple-red'}`}>
+                  {trade.status === 'open' ? 'OPEN' : `${trade.pnl > 0 ? '+' : ''}${formatCurrency(trade.pnl)}`}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 };

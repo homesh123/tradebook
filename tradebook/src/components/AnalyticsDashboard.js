@@ -1,12 +1,14 @@
 import React from 'react';
 import { analyzeTrades, analyzeMistakes, getPerformanceByTag, getEquityCurve } from '../utils/analytics';
-import { Line } from 'react-chartjs-2';
+import { getAdvancedMetrics } from '../utils/advancedAnalytics';
+import { Line, Doughnut, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
@@ -17,6 +19,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend
@@ -27,6 +30,7 @@ const AnalyticsDashboard = ({ trades }) => {
   const mistakes = analyzeMistakes(trades);
   const tagPerformance = getPerformanceByTag(trades);
   const equityCurve = getEquityCurve(trades);
+  const advanced = getAdvancedMetrics(trades);
 
   const equityData = {
     labels: equityCurve.map((p, idx) => idx === 0 ? 'Start' : p.date),
@@ -46,9 +50,7 @@ const AnalyticsDashboard = ({ trades }) => {
     responsive: true,
     maintainAspectRatio: true,
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       title: {
         display: true,
         text: 'Equity Curve',
@@ -72,13 +74,78 @@ const AnalyticsDashboard = ({ trades }) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
   };
 
+  const dailyData = {
+    labels: equityCurve.slice(1).map(p => p.date),
+    datasets: [
+      {
+        label: 'Daily P&L',
+        data: equityCurve.slice(1).map(p => p.value),
+        backgroundColor: equityCurve.slice(1).map(p => p.value > 0 ? 'rgba(0, 122, 255, 0.7)' : 'rgba(255, 59, 48, 0.7)'),
+        borderColor: 'rgba(0, 0, 0, 0.2)',
+        borderWidth: 1,
+        borderRadius: 3,
+      },
+    ],
+  };
+
+  const dailyOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Daily Win/Loss',
+        color: '#f5f5f7',
+        font: { size: 14, weight: '600' }
+      },
+    },
+    scales: {
+      y: {
+        ticks: { color: '#86868B', font: { size: 11 } },
+        grid: { color: '#1D1D1F' }
+      },
+      x: {
+        ticks: { color: '#86868B', font: { size: 11 }, maxTicksLimit: 7 },
+        grid: { color: '#1D1D1F' }
+      }
+    }
+  };
+
+  const doughnutData = {
+    labels: mistakes.slice(0, 6).map(m => m.mistake.replace(/-/g, ' ')),
+    datasets: [
+      {
+        data: mistakes.slice(0, 6).map(m => m.totalCost),
+        backgroundColor: [
+          'rgba(255, 59, 48, 0.8)',
+          'rgba(255, 149, 0, 0.8)',
+          'rgba(255, 204, 0, 0.8)',
+          'rgba(0, 122, 255, 0.8)',
+          'rgba(52, 199, 89, 0.8)',
+          'rgba(167, 156, 142, 0.8)',
+        ],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const doughnutOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#86868B', font: { size: 11 }, padding: 20 } },
+      title: { display: false },
+    },
+  };
+
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-[24px] sm:text-[28px] font-semibold text-apple-gray-900 dark:text-white tracking-tight">Analytics</h2>
         <p className="text-[13px] text-apple-gray-500 dark:text-apple-gray-400 mt-1">Performance insights and patterns</p>
       </div>
-      
+
       {/* Key Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
@@ -95,7 +162,7 @@ const AnalyticsDashboard = ({ trades }) => {
         <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
           <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Profit Factor</div>
           <div className="text-[18px] sm:text-[22px] font-semibold text-apple-gray-900 dark:text-white tracking-tight">
-            {analytics.profitFactor === Infinity ? '∞' : analytics.profitFactor.toFixed(2)}
+            {analytics.profitFactor === Infinity ? '\u221E' : analytics.profitFactor.toFixed(2)}
           </div>
         </div>
         <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
@@ -124,49 +191,70 @@ const AnalyticsDashboard = ({ trades }) => {
         </div>
       </div>
 
+      {/* Advanced Risk-Adjusted Metrics */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Sharpe Ratio</div>
+          <div className={`text-[18px] sm:text-[22px] font-semibold tracking-tight ${advanced.sharpeRatio >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
+            {advanced.sharpeRatio.toFixed(2)}
+          </div>
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400">Risk-adjusted return</div>
+        </div>
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Recovery Factor</div>
+          <div className={`text-[18px] sm:text-[22px] font-semibold tracking-tight ${advanced.recoveryFactor >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
+            {advanced.recoveryFactor.toFixed(2)}
+          </div>
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400">Profit / Max DD</div>
+        </div>
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Consistency Score</div>
+          <div className={`text-[18px] sm:text-[22px] font-semibold tracking-tight ${advanced.consistencyScore >= 50 ? 'text-apple-green' : 'text-apple-red'}`}>
+            {advanced.consistencyScore.toFixed(0)}%
+          </div>
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400">${advanced.profitableDays}/${advanced.tradingDays} days</div>
+        </div>
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Max Streak</div>
+          <div className={`text-[18px] sm:text-[22px] font-semibold tracking-tight ${advanced.maxConsecutiveWins >= advanced.maxConsecutiveLosses ? 'text-apple-green' : 'text-apple-red'}`}>
+            {advanced.maxConsecutiveWins >= advanced.maxConsecutiveLosses ? '+' : ''}${advanced.maxConsecutiveWins >= advanced.maxConsecutiveLosses ? advanced.maxConsecutiveWins : advanced.maxConsecutiveLosses}
+          </div>
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400">W/L consecutive</div>
+        </div>
+      </div>
+
       {/* Equity Curve */}
       {equityCurve.length > 1 && (
-        <div className="bg-white dark:bg-apple-gray-800 p-4 sm:p-5 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
-          <div className="h-[200px] sm:h-[280px]">
-            <Line options={{...equityOptions, maintainAspectRatio: false}} data={equityData} />
+        <div className="bg-white dark:bg-apple-gray-800 p-4 sm:p-5 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
+          <h3 className="px-5 py-4 text-[15px] font-semibold text-apple-gray-900 dark:text-white border-b border-apple-gray-200 dark:border-apple-gray-700 mb-0">Equity Curve</h3>
+          <div className="p-4 h-[200px] sm:h-[280px]">
+            <Line options={{ ...equityOptions, maintainAspectRatio: false }} data={equityData} />
           </div>
         </div>
       )}
 
-      {/* Top Mistakes */}
-      <div className="bg-white dark:bg-apple-gray-800 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
-        <div className="px-5 py-4 border-b border-apple-gray-200 dark:border-apple-gray-700">
-          <h3 className="text-[15px] font-semibold text-apple-gray-900 dark:text-white">Biggest Leaks</h3>
-        </div>
-        {mistakes.length === 0 ? (
-          <p className="p-5 text-[13px] text-apple-gray-500 dark:text-apple-gray-400">No mistakes tagged yet.</p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-apple-gray-200 dark:border-apple-gray-700">
-                  <th className="text-left px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Mistake</th>
-                  <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Count</th>
-                  <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Cost</th>
-                  <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Impact</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-apple-gray-200 dark:divide-apple-gray-700">
-                {mistakes.slice(0, 8).map((m, idx) => (
-                  <tr key={idx} className="hover:bg-apple-gray-50 dark:hover:bg-apple-gray-700/30">
-                    <td className="px-5 py-2.5 text-[13px] text-apple-gray-900 dark:text-white capitalize">{m.mistake.replace(/-/g, ' ')}</td>
-                    <td className="px-5 py-2.5 text-right text-[13px] text-apple-gray-600 dark:text-apple-gray-400">{m.count}</td>
-                    <td className="px-5 py-2.5 text-right text-[13px] text-apple-red">{formatCurrency(m.totalCost)}</td>
-                    <td className={`px-5 py-2.5 text-right text-[13px] font-medium ${m.totalPnl >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
-                      {formatCurrency(m.totalPnl)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* Daily P&L Chart */}
+      {equityCurve.length > 2 && (
+        <div className="bg-white dark:bg-apple-gray-800 p-4 sm:p-5 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
+          <h3 className="px-5 py-4 text-[15px] font-semibold text-apple-gray-900 dark:text-white border-b border-apple-gray-200 dark:border-apple-gray-700 mb-0">Daily Win/Loss</h3>
+          <div className="p-4 h-[200px] sm:h-[280px]">
+            <Bar options={dailyOptions} data={dailyData} />
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Mistake Distribution Chart */}
+      {mistakes.length > 0 && (
+        <div className="bg-white dark:bg-apple-gray-800 p-4 sm:p-5 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
+          <div className="px-5 py-4 border-b border-apple-gray-200 dark:border-apple-gray-700 flex justify-between items-center">
+            <h3 className="text-[15px] font-semibold text-apple-gray-900 dark:text-white">Mistake Cost Distribution</h3>
+            <p className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400">Size shows total cost per mistake</p>
+          </div>
+          <div className="p-4 h-[200px] sm:h-[280px]">
+            <Doughnut options={doughnutOptions} data={doughnutData} />
+          </div>
+        </div>
+      )}
 
       {/* Performance by Tag/Setup */}
       <div className="bg-white dark:bg-apple-gray-800 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
@@ -199,7 +287,7 @@ const AnalyticsDashboard = ({ trades }) => {
                         {formatCurrency(t.totalPnl)}
                       </td>
                       <td className="px-5 py-2.5 text-right text-[13px] text-apple-gray-900 dark:text-white">
-                        {t.profitFactor === Infinity ? '∞' : t.profitFactor.toFixed(2)}
+                        {t.profitFactor === Infinity ? '\u221E' : t.profitFactor.toFixed(2)}
                       </td>
                     </tr>
                   ))}
@@ -221,7 +309,7 @@ const AnalyticsDashboard = ({ trades }) => {
                   </div>
                   <div className="flex gap-4 text-[12px]">
                     <div><span className="text-apple-gray-500 dark:text-apple-gray-400">Win Rate:</span> <span className="text-apple-gray-900 dark:text-white">{t.winRate.toFixed(1)}%</span></div>
-                    <div><span className="text-apple-gray-500 dark:text-apple-gray-400">PF:</span> <span className="text-apple-gray-900 dark:text-white">{t.profitFactor === Infinity ? '∞' : t.profitFactor.toFixed(2)}</span></div>
+                    <div><span className="text-apple-gray-500 dark:text-apple-gray-400">PF:</span> <span className="text-apple-gray-900 dark:text-white">{t.profitFactor === Infinity ? '\u221E' : t.profitFactor.toFixed(2)}</span></div>
                   </div>
                 </div>
               ))}
