@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# EdgeTrace - Trading Journal & Analytics
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive trading journal app designed to help traders track performance, identify mistakes, and improve their edge. Built with React, Tailwind CSS, and Chart.js.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### Core Functionality
+- **Trade Logging**: Log trades with entry/exit, position size, stop loss, take profit, fees, and notes
+- **Trade History**: View all trades with filters (All, Open, Closed, Winners, Losers)
+- **Quick Add**: Easy trade entry form with tags and mistake tracking
 
-### `npm start`
+### Analytics & Insights
+- **Performance Dashboard**: Key metrics including PnL, Win Rate, Profit Factor, Expectancy, and R-Multiples
+- **Equity Curve**: Visualize cumulative performance over time
+- **Mistake Analysis**: Track and rank mistakes by cost to identify your biggest leaks
+- **Setup/Tag Performance**: See which strategies and setups actually have an edge
+- **Risk Metrics**: Max drawdown, average win/loss, largest win/loss
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Psychology & Discipline
+- **Mistake Tracking**: Tag common mistakes (FOMO, Chased Entry, Moved Stop, Revenge Trading, etc.)
+- **Discipline Tracking**: Mark whether you followed your plan
+- **Emotions Log**: Track emotional state for each trade
+- **Pre/Post Analysis**: Comprehensive notes for trade review
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Tools
+- **Trading Calendar**: Visual heatmap of daily PnL to spot patterns
+- **Import/Export**: CSV import/export for backup and portability
+- **Local Storage**: All data stored locally in your browser
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+npm start
+```
 
-### `npm run build`
+Open [http://localhost:3000](http://localhost:3000) to view in browser.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Tech Stack
+- React 18
+- Tailwind CSS
+- Chart.js & react-chartjs-2
+- Create React App
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Philosophy
+Focus on **fixing one thing at a time**. The app highlights your biggest leak so you can improve systematically rather than chasing perfect metrics.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
