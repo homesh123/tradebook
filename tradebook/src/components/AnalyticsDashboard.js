@@ -34,33 +34,36 @@ const AnalyticsDashboard = ({ trades }) => {
       {
         label: 'Cumulative PnL ($)',
         data: equityCurve.map(p => p.value),
-        borderColor: 'rgb(34, 197, 94)',
-        backgroundColor: 'rgba(34, 197, 94, 0.5)',
-        tension: 0.1,
+        borderColor: 'rgb(0, 122, 255)',
+        backgroundColor: 'rgba(0, 122, 255, 0.1)',
+        tension: 0.4,
+        pointRadius: 2,
       },
     ],
   };
 
   const equityOptions = {
     responsive: true,
+    maintainAspectRatio: true,
     plugins: {
       legend: {
-        position: 'top',
+        display: false,
       },
       title: {
         display: true,
         text: 'Equity Curve',
-        color: '#e2e8f0'
+        color: '#f5f5f7',
+        font: { size: 14, weight: '600' }
       },
     },
     scales: {
       y: {
-        ticks: { color: '#94a3b8' },
-        grid: { color: '#334155' }
+        ticks: { color: '#86868B', font: { size: 11 } },
+        grid: { color: '#1D1D1F' }
       },
       x: {
-        ticks: { color: '#94a3b8' },
-        grid: { color: '#334155' }
+        ticks: { color: '#86868B', font: { size: 11 }, maxTicksLimit: 6 },
+        grid: { color: '#1D1D1F' }
       }
     }
   };
@@ -71,84 +74,90 @@ const AnalyticsDashboard = ({ trades }) => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">Analytics Dashboard</h2>
+      <div>
+        <h2 className="text-[24px] sm:text-[28px] font-semibold text-apple-gray-900 dark:text-white tracking-tight">Analytics</h2>
+        <p className="text-[13px] text-apple-gray-500 dark:text-apple-gray-400 mt-1">Performance insights and patterns</p>
+      </div>
       
       {/* Key Metrics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-slate-800 p-4 rounded-lg">
-          <div className="text-slate-400 text-sm">Total PnL</div>
-          <div className={`text-xl font-bold ${analytics.totalPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Total P&L</div>
+          <div className={`text-[18px] sm:text-[22px] font-semibold tracking-tight ${analytics.totalPnl >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
             {formatCurrency(analytics.totalPnl)}
           </div>
         </div>
-        <div className="bg-slate-800 p-4 rounded-lg">
-          <div className="text-slate-400 text-sm">Win Rate</div>
-          <div className="text-xl font-bold text-white">{analytics.winRate.toFixed(1)}%</div>
-          <div className="text-xs text-slate-400">{analytics.winningTrades}W / {analytics.losingTrades}L</div>
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Win Rate</div>
+          <div className="text-[18px] sm:text-[22px] font-semibold text-apple-gray-900 dark:text-white tracking-tight">{analytics.winRate.toFixed(1)}%</div>
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400">{analytics.winningTrades}W / {analytics.losingTrades}L</div>
         </div>
-        <div className="bg-slate-800 p-4 rounded-lg">
-          <div className="text-slate-400 text-sm">Profit Factor</div>
-          <div className="text-xl font-bold text-white">
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Profit Factor</div>
+          <div className="text-[18px] sm:text-[22px] font-semibold text-apple-gray-900 dark:text-white tracking-tight">
             {analytics.profitFactor === Infinity ? '∞' : analytics.profitFactor.toFixed(2)}
           </div>
         </div>
-        <div className="bg-slate-800 p-4 rounded-lg">
-          <div className="text-slate-400 text-sm">Expectancy</div>
-          <div className={`text-xl font-bold ${analytics.expectancy >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Expectancy</div>
+          <div className={`text-[18px] sm:text-[22px] font-semibold tracking-tight ${analytics.expectancy >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
             {formatCurrency(analytics.expectancy)}
           </div>
-          <div className="text-xs text-slate-400">per trade</div>
         </div>
-        <div className="bg-slate-800 p-4 rounded-lg">
-          <div className="text-slate-400 text-sm">Avg R-Multiple</div>
-          <div className={`text-xl font-bold ${analytics.avgRMultiple >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Avg R</div>
+          <div className={`text-[18px] sm:text-[22px] font-semibold tracking-tight ${analytics.avgRMultiple >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
             {analytics.avgRMultiple >= 0 ? '+' : ''}{analytics.avgRMultiple.toFixed(2)}R
           </div>
         </div>
-        <div className="bg-slate-800 p-4 rounded-lg">
-          <div className="text-slate-400 text-sm">Max Drawdown</div>
-          <div className="text-xl font-bold text-red-400">{formatCurrency(analytics.maxDrawdown)}</div>
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Max DD</div>
+          <div className="text-[18px] sm:text-[22px] font-semibold text-apple-red tracking-tight">{formatCurrency(analytics.maxDrawdown)}</div>
         </div>
-        <div className="bg-slate-800 p-4 rounded-lg">
-          <div className="text-slate-400 text-sm">Largest Win</div>
-          <div className="text-xl font-bold text-green-400">{formatCurrency(analytics.largestWin)}</div>
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Largest Win</div>
+          <div className="text-[18px] sm:text-[22px] font-semibold text-apple-green tracking-tight">{formatCurrency(analytics.largestWin)}</div>
         </div>
-        <div className="bg-slate-800 p-4 rounded-lg">
-          <div className="text-slate-400 text-sm">Largest Loss</div>
-          <div className="text-xl font-bold text-red-400">{formatCurrency(analytics.largestLoss)}</div>
+        <div className="bg-white dark:bg-apple-gray-800 p-4 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide mb-1">Largest Loss</div>
+          <div className="text-[18px] sm:text-[22px] font-semibold text-apple-red tracking-tight">{formatCurrency(analytics.largestLoss)}</div>
         </div>
       </div>
 
       {/* Equity Curve */}
       {equityCurve.length > 1 && (
-        <div className="bg-slate-800 p-4 rounded-lg">
-          <Line options={equityOptions} data={equityData} />
+        <div className="bg-white dark:bg-apple-gray-800 p-4 sm:p-5 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
+          <div className="h-[200px] sm:h-[280px]">
+            <Line options={{...equityOptions, maintainAspectRatio: false}} data={equityData} />
+          </div>
         </div>
       )}
 
       {/* Top Mistakes */}
-      <div className="bg-slate-800 p-4 rounded-lg">
-        <h3 className="text-lg font-semibold text-white mb-3">Biggest Leaks (Mistakes Costing Money)</h3>
+      <div className="bg-white dark:bg-apple-gray-800 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
+        <div className="px-5 py-4 border-b border-apple-gray-200 dark:border-apple-gray-700">
+          <h3 className="text-[15px] font-semibold text-apple-gray-900 dark:text-white">Biggest Leaks</h3>
+        </div>
         {mistakes.length === 0 ? (
-          <p className="text-slate-400">No mistakes tagged yet. Tag mistakes on your trades to see them here.</p>
+          <p className="p-5 text-[13px] text-apple-gray-500 dark:text-apple-gray-400">No mistakes tagged yet.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-slate-700">
-                  <th className="text-left py-2 text-slate-400">Mistake</th>
-                  <th className="text-right py-2 text-slate-400">Count</th>
-                  <th className="text-right py-2 text-slate-400">Total Cost</th>
-                  <th className="text-right py-2 text-slate-400">Total PnL Impact</th>
+                <tr className="border-b border-apple-gray-200 dark:border-apple-gray-700">
+                  <th className="text-left px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Mistake</th>
+                  <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Count</th>
+                  <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Cost</th>
+                  <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Impact</th>
                 </tr>
               </thead>
-              <tbody>
-                {mistakes.slice(0, 10).map((m, idx) => (
-                  <tr key={idx} className="border-b border-slate-700/50">
-                    <td className="py-2 text-white capitalize">{m.mistake.replace(/-/g, ' ')}</td>
-                    <td className="py-2 text-right text-slate-300">{m.count}</td>
-                    <td className="py-2 text-right text-red-400">{formatCurrency(m.totalCost)}</td>
-                    <td className={`py-2 text-right ${m.totalPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              <tbody className="divide-y divide-apple-gray-200 dark:divide-apple-gray-700">
+                {mistakes.slice(0, 8).map((m, idx) => (
+                  <tr key={idx} className="hover:bg-apple-gray-50 dark:hover:bg-apple-gray-700/30">
+                    <td className="px-5 py-2.5 text-[13px] text-apple-gray-900 dark:text-white capitalize">{m.mistake.replace(/-/g, ' ')}</td>
+                    <td className="px-5 py-2.5 text-right text-[13px] text-apple-gray-600 dark:text-apple-gray-400">{m.count}</td>
+                    <td className="px-5 py-2.5 text-right text-[13px] text-apple-red">{formatCurrency(m.totalCost)}</td>
+                    <td className={`px-5 py-2.5 text-right text-[13px] font-medium ${m.totalPnl >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
                       {formatCurrency(m.totalPnl)}
                     </td>
                   </tr>
@@ -160,39 +169,64 @@ const AnalyticsDashboard = ({ trades }) => {
       </div>
 
       {/* Performance by Tag/Setup */}
-      <div className="bg-slate-800 p-4 rounded-lg">
-        <h3 className="text-lg font-semibold text-white mb-3">Performance by Setup/Tag</h3>
+      <div className="bg-white dark:bg-apple-gray-800 rounded-apple shadow-apple border border-apple-gray-200 dark:border-apple-gray-700 overflow-hidden">
+        <div className="px-5 py-4 border-b border-apple-gray-200 dark:border-apple-gray-700">
+          <h3 className="text-[15px] font-semibold text-apple-gray-900 dark:text-white">Performance by Setup</h3>
+        </div>
         {tagPerformance.length === 0 ? (
-          <p className="text-slate-400">Tag your trades with setups (e.g., breakout, pullback) to see performance by strategy.</p>
+          <p className="p-5 text-[13px] text-apple-gray-500 dark:text-apple-gray-400">Tag trades with setups to see performance.</p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-slate-700">
-                  <th className="text-left py-2 text-slate-400">Setup/Tag</th>
-                  <th className="text-right py-2 text-slate-400">Trades</th>
-                  <th className="text-right py-2 text-slate-400">Win Rate</th>
-                  <th className="text-right py-2 text-slate-400">Total PnL</th>
-                  <th className="text-right py-2 text-slate-400">Profit Factor</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tagPerformance.map((t, idx) => (
-                  <tr key={idx} className="border-b border-slate-700/50">
-                    <td className="py-2 text-white capitalize">{t.tag.replace(/-/g, ' ')}</td>
-                    <td className="py-2 text-right text-slate-300">{t.count} ({t.wins}W/{t.losses}L)</td>
-                    <td className="py-2 text-right text-slate-300">{t.winRate.toFixed(1)}%</td>
-                    <td className={`py-2 text-right ${t.totalPnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {formatCurrency(t.totalPnl)}
-                    </td>
-                    <td className="py-2 text-right text-slate-300">
-                      {t.profitFactor === Infinity ? '∞' : t.profitFactor.toFixed(2)}
-                    </td>
+          <>
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-apple-gray-200 dark:border-apple-gray-700">
+                    <th className="text-left px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Setup</th>
+                    <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Trades</th>
+                    <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Win Rate</th>
+                    <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">P&L</th>
+                    <th className="text-right px-5 py-2.5 text-[11px] text-apple-gray-500 dark:text-apple-gray-400 uppercase tracking-wide font-medium">Profit Factor</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-apple-gray-200 dark:divide-apple-gray-700">
+                  {tagPerformance.map((t, idx) => (
+                    <tr key={idx} className="hover:bg-apple-gray-50 dark:hover:bg-apple-gray-700/30">
+                      <td className="px-5 py-2.5 text-[13px] text-apple-gray-900 dark:text-white capitalize">{t.tag.replace(/-/g, ' ')}</td>
+                      <td className="px-5 py-2.5 text-right text-[13px] text-apple-gray-600 dark:text-apple-gray-400">{t.count} ({t.wins}W/{t.losses}L)</td>
+                      <td className="px-5 py-2.5 text-right text-[13px] text-apple-gray-900 dark:text-white">{t.winRate.toFixed(1)}%</td>
+                      <td className={`px-5 py-2.5 text-right text-[13px] font-medium ${t.totalPnl >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
+                        {formatCurrency(t.totalPnl)}
+                      </td>
+                      <td className="px-5 py-2.5 text-right text-[13px] text-apple-gray-900 dark:text-white">
+                        {t.profitFactor === Infinity ? '∞' : t.profitFactor.toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Mobile Cards */}
+            <div className="md:hidden divide-y divide-apple-gray-200 dark:divide-apple-gray-700">
+              {tagPerformance.map((t, idx) => (
+                <div key={idx} className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <div className="text-[14px] font-medium text-apple-gray-900 dark:text-white capitalize">{t.tag.replace(/-/g, ' ')}</div>
+                      <div className="text-[12px] text-apple-gray-500 dark:text-apple-gray-400">{t.count} trades ({t.wins}W/{t.losses}L)</div>
+                    </div>
+                    <div className={`text-[15px] font-semibold ${t.totalPnl >= 0 ? 'text-apple-green' : 'text-apple-red'}`}>
+                      {formatCurrency(t.totalPnl)}
+                    </div>
+                  </div>
+                  <div className="flex gap-4 text-[12px]">
+                    <div><span className="text-apple-gray-500 dark:text-apple-gray-400">Win Rate:</span> <span className="text-apple-gray-900 dark:text-white">{t.winRate.toFixed(1)}%</span></div>
+                    <div><span className="text-apple-gray-500 dark:text-apple-gray-400">PF:</span> <span className="text-apple-gray-900 dark:text-white">{t.profitFactor === Infinity ? '∞' : t.profitFactor.toFixed(2)}</span></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
