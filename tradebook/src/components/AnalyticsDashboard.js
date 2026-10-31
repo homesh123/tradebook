@@ -1,26 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { analyzeTrades } from '../utils/analytics';
-import { getAdvancedMetrics } from '../utils/advancedAnalytics';
-import {
-  getClosedTrades,
-  getCleanVsMistake,
-  getWhatIfEquity,
-  getMistakeStats,
-  getMistakeTimeline,
-  getDisciplineTrend,
-  getEmotionStats,
-  getPlanStats,
-  getDayOfWeekStats,
-  getAfterLossStats,
-  getSetupStats,
-  getRDistribution,
-  getMistakeCombos,
-  getDailyPnl,
-  getDisciplineScore,
-  getSuggestions,
-  titleCase,
-  R_BUCKETS,
-} from '../utils/behaviorAnalytics';
+import { buildInsights, titleCase, R_BUCKETS } from '../utils/behaviorAnalytics';
+import { useSettings } from '../context/SettingsContext';
+import { useApp } from '../context/AppContext';
+import { Button, PageHeader } from './ui';
 import { getFixAdvice } from '../utils/mistakeAdvice';
 import { useTheme } from '../context/ThemeContext';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
@@ -164,6 +146,8 @@ const useChartTheme = () => {
 
 const AnalyticsDashboard = ({ trades }) => {
   const ct = useChartTheme();
+  const { settings } = useSettings();
+  const { navigate, openTradeForm } = useApp();
   const [period, setPeriod] = useState('all');
   const [view, setView] = useState('charts');
 
@@ -173,30 +157,9 @@ const AnalyticsDashboard = ({ trades }) => {
     return [...trades].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, n);
   }, [trades, period]);
 
-  const data = useMemo(() => {
-    const closed = getClosedTrades(scopedTrades);
-    const analytics = analyzeTrades(scopedTrades);
-    const advanced = getAdvancedMetrics(scopedTrades);
-    const mistakeStats = getMistakeStats(closed);
-    const cleanVsMistake = getCleanVsMistake(closed);
-    const whatIf = getWhatIfEquity(closed);
-    const plan = getPlanStats(closed);
-    const emotions = getEmotionStats(closed);
-    const afterLoss = getAfterLossStats(closed);
-    const days = getDayOfWeekStats(closed);
-    const setups = getSetupStats(closed);
-    const rDist = getRDistribution(closed);
-    const combos = getMistakeCombos(closed);
-    const topKeys = mistakeStats.slice().sort((a, b) => b.count - a.count).slice(0, 5).map(m => m.mistake);
-    const timeline = getMistakeTimeline(closed, topKeys);
-    const disciplineTrend = getDisciplineTrend(closed);
-    const daily = getDailyPnl(closed);
-    const disciplineScore = getDisciplineScore(closed, plan);
-    const suggestions = getSuggestions({ closed, mistakeStats, cleanVsMistake, whatIf, plan, emotions, afterLoss, days, setups, rDist, combos });
-    return { closed, analytics, advanced, mistakeStats, cleanVsMistake, whatIf, plan, emotions, afterLoss, days, setups, rDist, combos, topKeys, timeline, disciplineTrend, daily, disciplineScore, suggestions };
-  }, [scopedTrades]);
+  const data = useMemo(() => buildInsights(scopedTrades, settings), [scopedTrades, settings]);
 
-  const { closed, analytics, advanced, mistakeStats, cleanVsMistake, whatIf, plan, emotions, afterLoss, days, setups, rDist, combos, topKeys, timeline, disciplineTrend, daily, disciplineScore, suggestions } = data;
+  const { closed, analytics, advanced, mistakeStats, cleanVsMistake, whatIf, plan, emotions, afterLoss, days, setups, rDist, combos, rules, hours, topKeys, timeline, disciplineTrend, daily, disciplineScore, suggestions } = data;
 
   if (closed.length === 0) {
     return (
@@ -207,6 +170,10 @@ const AnalyticsDashboard = ({ trades }) => {
             <div className="text-4xl mb-3">📈</div>
             <h3 className="text-[17px] font-semibold text-apple-gray-900 dark:text-white mb-2">No closed trades yet</h3>
             <p className="text-[13px] text-apple-gray-500 dark:text-apple-gray-400">Log trades with an exit price, tag your mistakes and emotions, and this page will show where you lose money and how to fix it.</p>
+            <div className="mt-4 flex gap-2 justify-center">
+              <Button onClick={() => openTradeForm()}>Log a trade</Button>
+              <Button variant="secondary" onClick={() => navigate('import')}>Import or load demo</Button>
+            </div>
           </div>
         </Card>
       </div>
@@ -435,6 +402,28 @@ const AnalyticsDashboard = ({ trades }) => {
     };
   })();
 
+  const hourChart = (() => {
+    const values = hours.map(h => h.totalPnl);
+    const opts = ct.base({ money: true });
+    opts.plugins.tooltip = {
+      ...opts.plugins.tooltip,
+      callbacks: { label: (c) => { const h = hours[c.dataIndex]; return [`Net: ${signedCurrency(h.totalPnl)}`, `Win rate: ${h.winRate.toFixed(0)}% (${h.count} trades)`]; } },
+    };
+    return {
+      data: {
+        labels: hours.map(h => h.label),
+        datasets: [{ data: values, backgroundColor: values.map(v => (v >= 0 ? 'rgba(52,199,89,0.85)' : 'rgba(255,59,48,0.85)')), ...ct.barStyle }],
+      },
+      options: opts,
+    };
+  })();
+  const ruleRows = [
+    { label: 'Days the daily loss limit was hit', value: settings.dailyLossLimit ? rules.lossLimitDays.length : null, sub: settings.dailyLossLimit ? `Limit ${formatCurrency(settings.dailyLossLimit)} · net ${signedCurrency(rules.costOnLimitDays)}` : 'Set a daily loss limit in Settings' },
+    { label: 'Days over the max trades limit', value: settings.maxTradesPerDay ? rules.overtradingDays.length : null, sub: settings.maxTradesPerDay ? `Limit ${settings.maxTradesPerDay}/day · net ${signedCurrency(rules.overtradingPnl)}` : 'Set max trades per day in Settings' },
+    { label: 'Trades above max risk', value: settings.riskPerTradePct ? rules.oversized.length : null, sub: `Rule: ${settings.riskPerTradePct || 0}% of account per trade` },
+    { label: 'Trades without a stop loss', value: rules.noStop.length, sub: 'Risk and R cannot be measured' },
+  ];
+
   const scoreColor = disciplineScore >= 75 ? GREEN : disciplineScore >= 50 ? '#FF9500' : RED;
   const scoreLabel = disciplineScore >= 75 ? 'Disciplined' : disciplineScore >= 50 ? 'Inconsistent' : 'Undisciplined';
   const gaugeData = {
@@ -598,6 +587,27 @@ const AnalyticsDashboard = ({ trades }) => {
             </Card>
           </div>
 
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card title="Risk Rule Breaks" subtitle="Your own rules from Settings, checked against every trade and day" right={<Button size="sm" variant="ghost" onClick={() => navigate('settings')}>Edit rules</Button>}>
+              <div className="divide-y divide-apple-gray-200 dark:divide-apple-gray-700">
+                {ruleRows.map(r => (
+                  <div key={r.label} className="px-5 py-3 flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-[13px] text-apple-gray-900 dark:text-white">{r.label}</div>
+                      <div className="text-[11px] text-apple-gray-500 dark:text-apple-gray-400">{r.sub}</div>
+                    </div>
+                    <div className={`text-[20px] font-semibold tabular-nums ${r.value === null ? 'text-apple-gray-400' : r.value > 0 ? 'text-apple-red' : 'text-apple-green'}`}>{r.value === null ? 'Off' : r.value === 0 ? '0 ✓' : r.value}</div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+            <Card title="P&L by Entry Hour" subtitle={hours.length ? 'Find the hours where you trade best and worst' : 'Add an entry time to trades to unlock this chart'}>
+              {hours.length === 0 ? <Empty>No trades with an entry time yet. Add the time in the trade form (or import from MT5) to see when you trade best.</Empty> : (
+                <div className="p-4 h-[240px]"><Bar data={hourChart.data} options={hourChart.options} /></div>
+              )}
+            </Card>
+          </div>
+
           <Card title="Daily P&L" subtitle="Net result per trading day">
             <div className="p-4 h-[220px] sm:h-[260px]"><Bar data={dailyChart.data} options={dailyChart.options} /></div>
           </Card>
@@ -691,16 +701,16 @@ const AnalyticsDashboard = ({ trades }) => {
 };
 
 const Header = ({ period, setPeriod, view, setView }) => (
-  <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-    <div>
-      <h2 className="text-[24px] sm:text-[28px] font-semibold text-apple-gray-900 dark:text-white tracking-tight">Analytics</h2>
-      <p className="text-[13px] text-apple-gray-500 dark:text-apple-gray-400 mt-1">Find your mistakes, behaviour patterns and what to fix next</p>
-    </div>
-    <div className="flex gap-2">
-      <Segmented options={PERIODS} value={period} onChange={setPeriod} />
-      <Segmented options={[{ key: 'charts', label: 'Charts' }, { key: 'table', label: 'Tables' }]} value={view} onChange={setView} />
-    </div>
-  </div>
+  <PageHeader
+    title="Analytics"
+    subtitle="Find your mistakes, behaviour patterns and what to fix next"
+    actions={
+      <>
+        <Segmented options={PERIODS} value={period} onChange={setPeriod} />
+        <Segmented options={[{ key: 'charts', label: 'Charts' }, { key: 'table', label: 'Tables' }]} value={view} onChange={setView} />
+      </>
+    }
+  />
 );
 
 const Segmented = ({ options, value, onChange }) => (

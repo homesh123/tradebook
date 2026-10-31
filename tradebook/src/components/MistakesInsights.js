@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { useTrades } from '../context/TradeContext';
 import { analyzeMistakes, calculateTradeMetrics } from '../utils/analytics';
 import { getFixAdvice } from '../utils/mistakeAdvice';
+import { useApp } from '../context/AppContext';
+import { PageHeader } from './ui';
 
 const MistakesInsights = () => {
   const { trades } = useTrades();
+  const { openTradeForm } = useApp();
   const mistakes = analyzeMistakes(trades);
   const [expandedMistake, setExpandedMistake] = useState(null);
   
@@ -31,11 +34,8 @@ const MistakesInsights = () => {
   
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-[24px] sm:text-[28px] font-semibold text-apple-gray-900 dark:text-white tracking-tight">Mistake Pattern Analysis</h2>
-        <p className="text-[13px] text-apple-gray-500 dark:text-apple-gray-400 mt-1">Find repeating patterns and fix them systematically</p>
-      </div>
-      
+      <PageHeader title="Mistakes" subtitle="Find repeating patterns and fix them systematically – click a mistake for the fix plan" />
+
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="bg-white dark:bg-apple-gray-800 rounded-apple p-5 shadow-apple border border-apple-gray-200 dark:border-apple-gray-700">
@@ -121,17 +121,17 @@ const MistakesInsights = () => {
                         <h4 className="text-[14px] font-semibold text-apple-gray-900 dark:text-white mb-2 flex items-center gap-2">
                           <span>📋</span> Affected Trades
                         </h4>
-                        <div className="bg-apple-gray-50 dark:bg-apple-gray-900/50 rounded-lg overflow-hidden">
+                        <div className="bg-apple-gray-50 dark:bg-apple-gray-900/50 rounded-lg overflow-hidden max-h-[260px] overflow-y-auto">
                           <div className="divide-y divide-apple-gray-200 dark:divide-apple-gray-700">
-                            {mistakeTrades.slice(0, 5).map((t, tidx) => (
-                              <div key={tidx} className="px-4 py-2.5 flex justify-between items-center text-[12px]">
+                            {mistakeTrades.map((t, tidx) => (
+                              <button key={tidx} onClick={() => openTradeForm(trades.find(x => x.id === t.id))} className="w-full text-left px-4 py-2.5 flex justify-between items-center text-[12px] hover:bg-apple-gray-100 dark:hover:bg-apple-gray-800">
                                 <div className="flex items-center gap-3">
                                   <span className="text-apple-gray-600 dark:text-apple-gray-400">{t.date}</span>
                                   <span className="font-medium text-apple-gray-900 dark:text-white">{t.pair}</span>
                                   <span className={t.side === 'long' ? 'text-apple-green' : 'text-apple-red'}>{t.side.toUpperCase()}</span>
                                 </div>
                                 <span className={t.pnl >= 0 ? 'text-apple-green' : 'text-apple-red'}>{t.pnl >= 0 ? '+' : ''}{formatCurrency(t.pnl)}</span>
-                              </div>
+                              </button>
                             ))}
                           </div>
                         </div>

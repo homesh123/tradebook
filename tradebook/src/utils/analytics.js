@@ -1,35 +1,49 @@
+const num = (v) => (v === null || v === undefined || v === '' || isNaN(parseFloat(v)) ? null : parseFloat(v));
+
+// Shared trade definitions used across the app.
+export const STANDARD_TAGS = ['Breakout', 'Pullback', 'Reversal', 'Range', 'News', 'Scalp', 'Swing', 'Momentum', 'Support/Resistance', 'VWAP'];
+export const STANDARD_MISTAKES = ['FOMO', 'Chased Entry', 'Moved Stop', 'Revenge Trade', 'Overtrading', 'Ignored Plan', 'Early Entry', 'Late Exit', 'Early Exit', 'Oversized Position', 'No Stop Loss', 'Poor Risk Management', 'Emotional'];
+export const STANDARD_EMOTIONS = ['Calm', 'Confident', 'Patient', 'Focused', 'Anxious', 'Impatient', 'Greedy', 'Fearful', 'Frustrated', 'Angry', 'Bored', 'Tired', 'Stressed', 'Nervous'];
+export const GRADES = ['A+', 'A', 'B', 'C', 'D'];
+
+export const isOpenTrade = (trade) => num(trade.exit) === null && num(trade.netPnl) === null;
+
+/**
+ * P&L model:
+ * - gross = price move x quantity x multiplier (multiplier = point value / contract size, default 1)
+ * - net   = gross - fees, unless the broker's net P&L is entered (netPnl), which wins.
+ * - R     = (exit - entry) / (entry - stop), signed for direction (fees excluded).
+ */
 export const calculateTradeMetrics = (trade) => {
   if (!trade) return null;
-  const entry = parseFloat(trade.entry) || 0;
-  const exit = trade.exit === null || trade.exit === undefined || trade.exit === '' ? null : parseFloat(trade.exit);
-  const quantity = parseFloat(trade.quantity) || 1;
-  const fees = parseFloat(trade.fees) || 0;
-  const stopLoss = trade.stopLoss === null || trade.stopLoss === undefined || trade.stopLoss === '' ? null : parseFloat(trade.stopLoss);
-  
-  if (exit === null || exit === undefined) {
-    return { ...trade, status: 'open', pnl: 0, rMultiple: null, pnlPercent: 0 };
+  const entry = num(trade.entry) || 0;
+  const exit = num(trade.exit);
+  const quantity = num(trade.quantity) || 1;
+  const multiplier = num(trade.multiplier) || 1;
+  const fees = num(trade.fees) || 0;
+  const stopLoss = num(trade.stopLoss);
+  const takeProfit = num(trade.takeProfit);
+  const override = num(trade.netPnl);
+  const dir = trade.side === 'short' ? -1 : 1;
+
+  const stopDistance = stopLoss !== null ? Math.abs(entry - stopLoss) : null;
+  const risk = stopDistance ? stopDistance * quantity * multiplier : null;
+  const plannedRR = stopDistance && takeProfit !== null ? Math.abs(takeProfit - entry) / stopDistance : null;
+
+  if (exit === null && override === null) {
+    return { ...trade, status: 'open', pnl: 0, rMultiple: null, pnlPercent: 0, risk, plannedRR };
   }
-  
-  let pnl;
-  if (trade.side === 'short') {
-    pnl = (entry - exit) * quantity - fees;
-  } else {
-    pnl = (exit - entry) * quantity - fees;
-  }
-  
-  let risk = null;
-  if (stopLoss !== null) {
-    if (trade.side === 'short') {
-      risk = Math.abs(stopLoss - entry) * quantity;
-    } else {
-      risk = Math.abs(entry - stopLoss) * quantity;
-    }
-  }
-  const rMultiple = risk && risk > 0 ? pnl / risk : null;
-  const costBasis = entry * quantity;
+
+  const pnl = override !== null ? override : (exit - entry) * dir * quantity * multiplier - fees;
+  // R-multiple is price based: how far price moved in your favour, measured in stop distances.
+  // This is independent of contract size, so it stays correct for futures, forex and imports.
+  let rMultiple = null;
+  if (stopDistance && exit !== null) rMultiple = ((exit - entry) * dir) / stopDistance;
+  else if (risk && risk > 0) rMultiple = pnl / risk;
+  const costBasis = entry * quantity * multiplier;
   const pnlPercent = costBasis > 0 ? (pnl / costBasis) * 100 : 0;
-  
-  return { ...trade, status: 'closed', pnl, rMultiple, pnlPercent, risk };
+
+  return { ...trade, status: 'closed', pnl, rMultiple, pnlPercent, risk, plannedRR };
 };
 
 export const analyzeTrades = (trades) => {
@@ -41,7 +55,7 @@ export const analyzeTrades = (trades) => {
     return {
       totalTrades: trades.length,
       closedTrades: 0,
-      openTrades: trades.filter(t => t.status !== 'closed' && (t.exit === null || t.exit === undefined || t.exit === '')).length,
+      openTrades: trades.filter(isOpenTrade).length,
       totalPnl: 0,
       winRate: 0,
       winningTrades: 0,
@@ -97,7 +111,7 @@ export const analyzeTrades = (trades) => {
   return {
     totalTrades: trades.length,
     closedTrades: closedTrades.length,
-    openTrades: trades.filter(t => t.exit === null || t.exit === undefined || t.exit === '').length,
+    openTrades: trades.filter(isOpenTrade).length,
     totalPnl,
     winRate,
     winningTrades: winningTrades.length,

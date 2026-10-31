@@ -9,6 +9,9 @@ export const MISTAKE_ADVICE = {
   'early entry': { rule: 'Wait for confirmation', solution: 'Define specific confirmation signals. Don\'t anticipate breakouts.', prevention: 'Use higher timeframe confirmation' },
   'late exit': { rule: 'Stick to exit plan', solution: 'Set take profit orders at pre-defined levels. Trail only per rules.', prevention: 'Review exit criteria before entry' },
   'poor risk management': { rule: 'Risk defined before entry', solution: 'Calculate position size from stop distance. Never risk >1% per trade.', prevention: 'Use position size calculator' },
+  'early exit': { rule: 'Let the plan play out', solution: 'Exit only at your stop, target or a predefined invalidation. Scale out a portion if you must lock in profit.', prevention: 'Set the take-profit order at entry and step away from the screen' },
+  'oversized position': { rule: 'Size from the stop, not from conviction', solution: 'Position size = (account × risk %) ÷ stop distance. Never exceed your max risk %.', prevention: 'Use the live risk preview in the trade form before every entry' },
+  'no stop loss': { rule: 'No stop, no trade', solution: 'Define the invalidation level before entering and place a hard stop order immediately.', prevention: 'Make "stop placed" item #1 on your pre-trade checklist' },
   'emotional': { rule: 'Trade only in optimal state', solution: 'Rate readiness 1-10 before trading. Skip if below 7.', prevention: 'Morning routine check-in' }
   };
 

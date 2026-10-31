@@ -1,4 +1,6 @@
-import { calculateTradeMetrics } from './analytics';
+import { calculateTradeMetrics, analyzeTrades } from './analytics';
+import { getAdvancedMetrics } from './advancedAnalytics';
+import { getRuleViolations, getHourStats } from './rules';
 import { getFixAdvice } from './mistakeAdvice';
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -255,7 +257,7 @@ export const getDisciplineScore = (closed, plan) => {
 const fmt$ = (v) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(v);
 
 // Turn the numbers into a prioritized list of coaching suggestions.
-export const getSuggestions = ({ closed, mistakeStats, cleanVsMistake, whatIf, plan, emotions, afterLoss, days, setups, rDist, combos }) => {
+export const getSuggestions = ({ closed, mistakeStats, cleanVsMistake, whatIf, plan, emotions, afterLoss, days, setups, rDist, combos, rules, hours, settings }) => {
   const out = [];
   if (closed.length < 3) return out;
 
@@ -276,6 +278,43 @@ export const getSuggestions = ({ closed, mistakeStats, cleanVsMistake, whatIf, p
       title: 'Your rules already make money',
       detail: `Clean trades won ${cleanVsMistake.clean.winRate.toFixed(0)}% vs ${cleanVsMistake.mistake.winRate.toFixed(0)}% for trades with mistakes. Skipping mistake trades would have changed your P&L from ${fmt$(whatIf.actual)} to ${fmt$(whatIf.disciplined)}.`,
       action: 'Before every entry, run a pre-trade checklist. If any box is unchecked, do not take the trade.',
+    });
+  }
+
+  if (rules && rules.lossLimitDays.length) {
+    out.push({
+      severity: 'critical',
+      title: 'Daily loss limit broken',
+      detail: `You hit your ${fmt$(settings.dailyLossLimit)} daily loss limit on ${rules.lossLimitDays.length} day${rules.lossLimitDays.length > 1 ? 's' : ''} (total ${fmt$(rules.costOnLimitDays)}).`,
+      action: 'When the limit is reached, close the platform for the day. Set the limit as a hard stop with your broker if possible.',
+    });
+  }
+
+  if (rules && rules.overtradingDays.length) {
+    out.push({
+      severity: 'serious',
+      title: 'Overtrading days',
+      detail: `${rules.overtradingDays.length} day${rules.overtradingDays.length > 1 ? 's' : ''} went over your ${settings.maxTradesPerDay}-trade limit, netting ${fmt$(rules.overtradingPnl)}.`,
+      action: 'Count trades on a sticky note. When you reach the limit, you are done – no exceptions.',
+    });
+  }
+
+  if (rules && rules.oversized.length) {
+    const worstRisk = Math.max(...rules.oversized.map(t => t.riskPct));
+    out.push({
+      severity: 'serious',
+      title: 'Position size above your risk rule',
+      detail: `${rules.oversized.length} trade${rules.oversized.length > 1 ? 's' : ''} risked more than ${settings.riskPerTradePct}% of the account (up to ${worstRisk.toFixed(1)}%).`,
+      action: 'Size every position from the stop distance: size = (account × risk%) ÷ stop distance. The trade form shows this live.',
+    });
+  }
+
+  if (rules && closed.length >= 5 && rules.noStop.length / closed.length >= 0.2) {
+    out.push({
+      severity: 'serious',
+      title: 'Trades without a stop loss',
+      detail: `${rules.noStop.length} of ${closed.length} trades have no stop loss recorded, so risk and R-multiples can't be measured.`,
+      action: 'Decide and log the stop before entering. No stop = no trade.',
     });
   }
 
@@ -363,6 +402,18 @@ export const getSuggestions = ({ closed, mistakeStats, cleanVsMistake, whatIf, p
     }
   }
 
+  if (hours && hours.filter(h => h.count >= 2).length >= 3) {
+    const worstHour = [...hours].filter(h => h.count >= 2).sort((a, b) => a.totalPnl - b.totalPnl)[0];
+    if (worstHour.totalPnl < 0) {
+      out.push({
+        severity: 'warning',
+        title: `Weak hour: ${worstHour.label}`,
+        detail: `Trades entered around ${worstHour.label} netted ${fmt$(worstHour.totalPnl)} over ${worstHour.count} trades (${worstHour.winRate.toFixed(0)}% win rate).`,
+        action: 'Avoid new entries in this hour, or only take your best setup.',
+      });
+    }
+  }
+
   const improving = mistakeStats.filter(m => m.trend === 'down');
   if (improving.length) {
     out.push({
@@ -373,5 +424,32 @@ export const getSuggestions = ({ closed, mistakeStats, cleanVsMistake, whatIf, p
     });
   }
 
-  return out;
+  const rank = { critical: 0, serious: 1, warning: 2, good: 3 };
+  return out.map((o, i) => ({ ...o, i })).sort((a, b) => rank[a.severity] - rank[b.severity] || a.i - b.i);
+};
+
+// Everything the Overview and Analytics pages need, computed in one pass.
+export const buildInsights = (trades, settings) => {
+  const closed = getClosedTrades(trades);
+  const analytics = analyzeTrades(trades);
+  const advanced = getAdvancedMetrics(trades);
+  const mistakeStats = getMistakeStats(closed);
+  const cleanVsMistake = getCleanVsMistake(closed);
+  const whatIf = getWhatIfEquity(closed);
+  const plan = getPlanStats(closed);
+  const emotions = getEmotionStats(closed);
+  const afterLoss = getAfterLossStats(closed);
+  const days = getDayOfWeekStats(closed);
+  const setups = getSetupStats(closed);
+  const rDist = getRDistribution(closed);
+  const combos = getMistakeCombos(closed);
+  const rules = getRuleViolations(trades, settings);
+  const hours = getHourStats(closed);
+  const topKeys = mistakeStats.slice().sort((a, b) => b.count - a.count).slice(0, 5).map(m => m.mistake);
+  const timeline = getMistakeTimeline(closed, topKeys);
+  const disciplineTrend = getDisciplineTrend(closed);
+  const daily = getDailyPnl(closed);
+  const disciplineScore = getDisciplineScore(closed, plan);
+  const suggestions = getSuggestions({ closed, mistakeStats, cleanVsMistake, whatIf, plan, emotions, afterLoss, days, setups, rDist, combos, rules, hours, settings });
+  return { closed, analytics, advanced, mistakeStats, cleanVsMistake, whatIf, plan, emotions, afterLoss, days, setups, rDist, combos, rules, hours, topKeys, timeline, disciplineTrend, daily, disciplineScore, suggestions };
 };

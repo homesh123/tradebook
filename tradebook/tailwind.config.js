@@ -25,6 +25,14 @@ module.exports = {
         },
       },
       borderRadius: { apple: '12px' },
+      keyframes: {
+        'fade-in': { from: { opacity: 0 }, to: { opacity: 1 } },
+        'sheet-in': { from: { opacity: 0, transform: 'translateY(12px) scale(0.98)' }, to: { opacity: 1, transform: 'none' } },
+      },
+      animation: {
+        'fade-in': 'fade-in 150ms ease-out',
+        'sheet-in': 'sheet-in 220ms cubic-bezier(0.32, 0.72, 0, 1)',
+      },
       boxShadow: {
         apple: '0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03)',
         'apple-lg': '0 4px 6px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.03)',

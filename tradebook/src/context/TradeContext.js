@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { loadTrades, saveTrades } from '../utils/storage';
+import { loadTrades, saveTrades, newId } from '../utils/storage';
 
 const TradeContext = createContext();
 
@@ -12,24 +12,17 @@ export const useTrades = () => {
 };
 
 export const TradeProvider = ({ children }) => {
-  const [trades, setTrades] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Load synchronously so the first render already has the journal (no empty flash).
+  const [trades, setTrades] = useState(loadTrades);
+  const loading = false;
 
   useEffect(() => {
-    const loaded = loadTrades();
-    setTrades(loaded);
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    if (!loading) {
-      saveTrades(trades);
-    }
-  }, [trades, loading]);
+    saveTrades(trades);
+  }, [trades]);
 
   const addTrade = (trade) => {
     const newTrade = {
-      id: trade.id || Date.now().toString() + Math.random().toString(36).substr(2,9),
+      id: trade.id || newId(),
       ...trade,
       createdAt: trade.createdAt || new Date().toISOString()
     };
@@ -38,16 +31,25 @@ export const TradeProvider = ({ children }) => {
   };
 
   const updateTrade = (id, updates) => {
-    setTrades(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
+    setTrades(prev => prev.map(t => t.id === id ? { ...t, ...updates, updatedAt: new Date().toISOString() } : t));
   };
 
   const deleteTrade = (id) => {
     setTrades(prev => prev.filter(t => t.id !== id));
   };
 
+  // Adds trades, skipping any whose id already exists. Returns { added, skipped }.
   const importTrades = (importedTrades) => {
-    setTrades(prev => [...importedTrades, ...prev]);
+    const existing = new Set(trades.map(t => t.id));
+    const fresh = importedTrades.filter(t => !existing.has(t.id));
+    setTrades(prev => [...fresh, ...prev]);
+    return { added: fresh.length, skipped: importedTrades.length - fresh.length };
   };
+
+  const replaceAllTrades = (next) => setTrades(next);
+
+  // Re-inserts a deleted trade (used by Undo).
+  const restoreTrade = (trade) => setTrades(prev => (prev.some(t => t.id === trade.id) ? prev : [trade, ...prev]));
 
   const clearAllTrades = () => {
     setTrades([]);
@@ -60,6 +62,8 @@ export const TradeProvider = ({ children }) => {
       updateTrade,
       deleteTrade,
       importTrades,
+      replaceAllTrades,
+      restoreTrade,
       clearAllTrades,
       loading
     }}>
