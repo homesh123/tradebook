@@ -162,7 +162,46 @@ Searchable in-app help covering every page, a metrics glossary, shortcuts and FA
 
 ---
 
-## 5. Developer guide
+## 5. SEO, AEO and GEO
+
+EdgeTrace is a JavaScript app with hash routes, which search engines and AI answer engines index
+poorly. The public, crawlable layer is generated from one content file:
+
+| File | Purpose |
+|---|---|
+| `tradebook/scripts/seo-content.js` | **Edit this** – site facts and every guide page (questions, answers, FAQs, glossary, how-to steps). |
+| `tradebook/scripts/build-seo-pages.js` | Generator – runs automatically before every build (`prebuild`), or with `npm run seo`. |
+| `public/<slug>/index.html` | Static guide pages: trading-journal, trading-mistakes, trading-metrics, risk-management, trading-psychology, guide, faq. |
+| `public/index.html` | Homepage metadata, Open Graph/Twitter cards, JSON-LD and prerendered content between `<!--seo-…:start/end-->` markers. |
+| `public/sitemap.xml` | All indexable URLs. |
+| `public/robots.txt` | Allows all crawlers, explicitly including AI crawlers (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot-Extended). |
+| `public/llms.txt`, `public/llms-full.txt` | Summary and full-text Markdown for AI engines (llms.txt convention). |
+| `public/og-image.png` | 1200×630 social share image. |
+| `public/404.html` | Helpful not-found page (noindex). |
+
+What each layer does:
+- **SEO** – unique titles (≤ 60 chars) and descriptions (≤ 155), canonical URLs, sitemap, internal linking, breadcrumbs,
+  one H1 per page, crawlable homepage content for non-JS crawlers, `max-snippet:-1` / `max-image-preview:large`.
+- **AEO (answer engines, featured snippets)** – each section is a real question answered in its first sentence,
+  a "Short answer" box at the top, and `FAQPage`, `HowTo`, `DefinedTermSet` and `ItemList` structured data.
+- **GEO (generative engines)** – concrete formulas and worked examples that are easy to quote, consistent entity
+  facts (`WebApplication`, `Organization`), `llms.txt` / `llms-full.txt`, and AI crawlers allowed in robots.txt.
+
+When content changes, bump `SITE.updated` in `seo-content.js` so `dateModified` and the sitemap stay accurate.
+
+### Off-site steps that need the owner
+These cannot be done from the code and have the biggest remaining impact:
+1. Add the site to **Google Search Console** and **Bing Webmaster Tools** and submit `sitemap.xml`
+   (Bing also feeds ChatGPT search and Copilot).
+2. Consider a **custom domain** (e.g. `edgetrace.app`) – a `github.io/project` sub-path gives limited domain authority.
+   Update `SITE.url` and the URLs in `public/index.html`, `robots.txt` and `404.html` if you do.
+3. Earn mentions and links: list EdgeTrace on Product Hunt, AlternativeTo, trading subreddits/forums and
+   "best trading journal" roundups – AI engines lean heavily on third-party mentions.
+4. Validate with Google's Rich Results Test and the Schema.org validator after deploying.
+
+---
+
+## 6. Developer guide
 
 ```bash
 cd tradebook

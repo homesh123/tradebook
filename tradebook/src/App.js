@@ -24,6 +24,16 @@ const PAGES = [
   { key: 'settings', label: 'Settings', icon: '⚙️', section: 'Data' },
   { key: 'help', label: 'Help & Guide', icon: '❓', section: 'Data' },
 ];
+const PAGE_DESCRIPTIONS = {
+  overview: 'Your trading dashboard: account balance, today\'s risk guardrails, discipline score and the mistakes to fix next.',
+  trades: 'Search, filter and edit every trade in your trading journal.',
+  calendar: 'Trading calendar with daily and weekly P&L, mistakes and notes.',
+  mistakes: 'Your trading mistakes ranked by cost, with a rule, fix and prevention method for each.',
+  analytics: 'Trading analytics: mistake costs, tilt, emotions, risk rule breaks and a ranked coaching plan.',
+  import: 'Import trades from CSV or MetaTrader 4/5, export to CSV and back up your trading journal.',
+  settings: 'Set your account size, max risk per trade, daily loss limit and max trades per day.',
+  help: 'How to use EdgeTrace and understand trading metrics like profit factor, expectancy and R-multiple.',
+};
 const MOBILE_TABS = ['overview', 'trades', 'mistakes', 'analytics'];
 
 const pageFromHash = () => {
@@ -84,8 +94,10 @@ const MainApp = () => {
   }, []);
 
   useEffect(() => {
-    const p = PAGES.find(x => x.key === page);
-    document.title = `${p ? p.label : 'Overview'} · EdgeTrace`;
+    const p = PAGES.find(x => x.key === page) || PAGES[0];
+    document.title = `${p.label} · EdgeTrace Trading Journal`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', PAGE_DESCRIPTIONS[p.key]);
     const main = document.getElementById('main');
     if (main) main.scrollTop = 0;
   }, [page]);
@@ -159,7 +171,9 @@ const MainApp = () => {
           </nav>
           <div className="p-2 border-t border-apple-gray-200 dark:border-apple-gray-800">
             <ThemeToggle />
-            <p className="px-2.5 pt-1 text-[10px] text-apple-gray-400">Data stays on this device.</p>
+            <p className="px-2.5 pt-1 text-[10px] text-apple-gray-400">
+              Data stays on this device · <a href={`${process.env.PUBLIC_URL}/trading-journal/`} className="hover:text-apple-blue">Guides</a>
+            </p>
           </div>
         </aside>
 

@@ -144,6 +144,15 @@ const TOPICS = [
   },
 ];
 
+const GUIDES = [
+  ['trading-mistakes', 'Common trading mistakes and how to fix them', 'FOMO, revenge trading, moved stops, oversizing – a rule and fix for each.'],
+  ['trading-metrics', 'Trading metrics explained', 'Profit factor, expectancy, R-multiple, drawdown – formulas and examples.'],
+  ['risk-management', 'Risk management rules', 'Position sizing, the 1% rule, daily loss limits.'],
+  ['trading-psychology', 'Trading psychology', 'Tilt, FOMO, revenge trading and measurable discipline.'],
+  ['guide', 'How to use a trading journal', 'Step-by-step routine, CSV and MT4/MT5 import.'],
+  ['trading-journal', 'Why use a trading journal', 'What EdgeTrace does differently from a spreadsheet.'],
+];
+
 const PAGE_LABELS = { overview: 'Overview', trades: 'Trade Log', calendar: 'Calendar', mistakes: 'Mistakes', analytics: 'Analytics', import: 'Import & Export', settings: 'Settings' };
 
 const flatten = (body) => body.map(b => (Array.isArray(b) ? b.join(' ') : b)).join(' ').toLowerCase();
@@ -197,6 +206,19 @@ const Help = () => {
             );
           })}
         </div>
+      </Card>
+
+      <Card title="Trading guides" subtitle="In-depth articles you can share or read without opening the app">
+        <ul className="divide-y divide-apple-gray-200 dark:divide-apple-gray-700">
+          {GUIDES.map(([slug, label, text]) => (
+            <li key={slug}>
+              <a href={`${process.env.PUBLIC_URL}/${slug}/`} className="block px-5 py-3 hover:bg-apple-gray-50 dark:hover:bg-apple-gray-700/30">
+                <span className="text-[14px] font-medium text-apple-blue">{label}</span>
+                <span className="block text-[12px] text-apple-gray-500 dark:text-apple-gray-400">{text}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </Card>
 
       <p className="text-[12px] text-apple-gray-500 dark:text-apple-gray-400">Full documentation for developers and power users is in <code>docs/DOCUMENTATION.md</code> in the project repository.</p>

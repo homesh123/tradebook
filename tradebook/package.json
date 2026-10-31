@@ -19,14 +19,26 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "react-scripts build && node scripts/publish.js",
-    "test": "react-scripts test"
+    "deploy": "npm run build && node scripts/publish.js",
+    "test": "react-scripts test",
+    "seo": "node scripts/build-seo-pages.js",
+    "prebuild": "node scripts/build-seo-pages.js"
   },
   "eslintConfig": {
-    "extends": ["react-app"]
+    "extends": [
+      "react-app"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

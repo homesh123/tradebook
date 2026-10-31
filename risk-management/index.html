@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Position Sizing, the 1% Rule &amp; Daily Loss Limits | EdgeTrace</title>
+<meta name="description" content="How to size positions, apply the 1% risk rule and set a daily loss limit, with formulas and examples for stocks, futures and forex.">
+<link rel="canonical" href="https://homesh123.github.io/tradebook/risk-management/">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="EdgeTrace">
+<meta property="og:title" content="Trading risk management rules that keep you in the game">
+<meta property="og:description" content="How to size positions, apply the 1% risk rule and set a daily loss limit, with formulas and examples for stocks, futures and forex.">
+<meta property="og:url" content="https://homesh123.github.io/tradebook/risk-management/">
+<meta property="og:image" content="https://homesh123.github.io/tradebook/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:modified_time" content="2026-10-31">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Trading risk management rules that keep you in the game">
+<meta name="twitter:description" content="How to size positions, apply the 1% risk rule and set a daily loss limit, with formulas and examples for stocks, futures and forex.">
+<meta name="twitter:image" content="https://homesh123.github.io/tradebook/og-image.png">
+<meta name="theme-color" content="#007AFF">
+<link rel="icon" href="https://homesh123.github.io/tradebook/favicon.ico">
+<link rel="apple-touch-icon" href="https://homesh123.github.io/tradebook/logo192.png">
+<link rel="stylesheet" href="https://homesh123.github.io/tradebook/assets/site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Trading risk management rules that keep you in the game","description":"How to size positions, apply the 1% risk rule and set a daily loss limit, with formulas and examples for stocks, futures and forex.","url":"https://homesh123.github.io/tradebook/risk-management/","mainEntityOfPage":"https://homesh123.github.io/tradebook/risk-management/","datePublished":"2026-10-31","dateModified":"2026-10-31","author":{"@type":"Organization","name":"EdgeTrace","url":"https://homesh123.github.io/tradebook/","logo":"https://homesh123.github.io/tradebook/logo512.png"},"publisher":{"@type":"Organization","name":"EdgeTrace","url":"https://homesh123.github.io/tradebook/","logo":"https://homesh123.github.io/tradebook/logo512.png"},"image":"https://homesh123.github.io/tradebook/og-image.png","inLanguage":"en"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EdgeTrace","item":"https://homesh123.github.io/tradebook/"},{"@type":"ListItem","position":2,"name":"Risk Management","item":"https://homesh123.github.io/tradebook/risk-management/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the 1% rule in trading?","acceptedAnswer":{"@type":"Answer","text":"The 1% rule means never risking more than 1% of your account on a single trade. With a $10,000 account the maximum loss per trade is $100, and position size is chosen so that hitting the stop loss costs exactly that."}},{"@type":"Question","name":"What is a good daily loss limit?","acceptedAnswer":{"@type":"Answer","text":"A common daily loss limit is 2–3 times your per-trade risk, for example 2–3% of the account if you risk 1% per trade. The exact number matters less than stopping every single time you reach it."}},{"@type":"Question","name":"Should every trade have a stop loss?","acceptedAnswer":{"@type":"Answer","text":"Yes. Without a stop loss you cannot size the position, measure R-multiples or cap the loss. Decide the stop before entry and place it as a real order."}}]}</script>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="https://homesh123.github.io/tradebook/"><span class="logo" aria-hidden="true">E</span>EdgeTrace</a>
+  <nav aria-label="Guides">
+    <a href="https://homesh123.github.io/tradebook/trading-journal/">Trading Journal</a>
+    <a href="https://homesh123.github.io/tradebook/trading-mistakes/">Trading Mistakes</a>
+    <a href="https://homesh123.github.io/tradebook/trading-metrics/">Metrics Glossary</a>
+    <a href="https://homesh123.github.io/tradebook/risk-management/" aria-current="page">Risk Management</a>
+    <a href="https://homesh123.github.io/tradebook/trading-psychology/">Trading Psychology</a>
+    <a href="https://homesh123.github.io/tradebook/guide/">How-to Guide</a>
+    <a href="https://homesh123.github.io/tradebook/faq/">FAQ</a>
+  </nav>
+  <a class="cta" href="https://homesh123.github.io/tradebook/#/overview">Open the free app</a>
+</header>
+<main class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="https://homesh123.github.io/tradebook/">EdgeTrace</a> › <span>Risk Management</span></nav>
+  <article>
+    <h1>Trading risk management rules that keep you in the game</h1>
+    <p class="updated">Updated <time datetime="2026-10-31">October 31, 2026</time></p>
+    <p class="answer"><strong>Short answer:</strong> Good risk management means deciding before every trade how much you can lose, sizing the position so a stop-out costs exactly that amount, and stopping for the day when a pre-set loss limit is reached. Most professional traders risk 0.5%–2% of their account per trade.</p>
+    
+
+
+
+<section>
+  <h2>How much should I risk per trade?</h2>
+  <p>Most professional traders risk between 0.5% and 2% of their account on a single trade; 1% is the most common rule. At 1% risk, ten losses in a row cost about 10% of the account – painful but survivable. At 10% risk, the same streak would cost about 65%.</p>
+  
+</section>
+
+<section>
+  <h2>How do I calculate position size?</h2>
+  <p>Position size = (account balance × risk %) ÷ (stop distance × point value).</p>
+  <ul><li>Stocks: $20,000 account, 1% risk = $200. Entry $50, stop $48 (distance $2). Size = 200 ÷ 2 = 100 shares.</li><li>Futures (ES, $50 per point): $50,000 account, 1% = $500. Stop 5 points away = $250 per contract. Size = 2 contracts.</li><li>Forex (EUR/USD, $10 per pip per standard lot): $10,000 account, 1% = $100. Stop 20 pips = $200 per lot. Size = 0.5 lots.</li></ul>
+</section>
+
+<section>
+  <h2>What is a daily loss limit and why use one?</h2>
+  <p>A daily loss limit is the maximum you allow yourself to lose in one day; when you reach it, you stop trading until tomorrow. It protects you from tilt – the spiral of emotional trades after losses – which is where most account-destroying days come from. A common starting point is 2–3× your per-trade risk.</p>
+  
+</section>
+
+<section>
+  <h2>Why limit the number of trades per day?</h2>
+  <p>A maximum number of trades per day stops overtrading: forcing low-quality setups out of boredom or to recover losses. Pick a number that matches how many A+ setups your strategy realistically produces in a session, typically 2–5 for day traders.</p>
+  
+</section>
+
+<section>
+  <h2>How does EdgeTrace enforce risk rules?</h2>
+  
+  <ul><li>The trade form shows risk in $ and as % of your account as you type, and warns when it exceeds your max risk.</li><li>The Overview tracks today’s trades and loss against your limits and shows a &quot;Stop trading for today&quot; banner when one is hit.</li><li>Analytics counts every day you broke the loss limit or max trades, every oversized trade and every trade without a stop.</li></ul>
+</section>
+<section class="faq"><h2>Frequently asked questions</h2><div class="item"><h3>What is the 1% rule in trading?</h3><p>The 1% rule means never risking more than 1% of your account on a single trade. With a $10,000 account the maximum loss per trade is $100, and position size is chosen so that hitting the stop loss costs exactly that.</p></div><div class="item"><h3>What is a good daily loss limit?</h3><p>A common daily loss limit is 2–3 times your per-trade risk, for example 2–3% of the account if you risk 1% per trade. The exact number matters less than stopping every single time you reach it.</p></div><div class="item"><h3>Should every trade have a stop loss?</h3><p>Yes. Without a stop loss you cannot size the position, measure R-multiples or cap the loss. Decide the stop before entry and place it as a real order.</p></div></section>
+  </article>
+  <aside class="cta-box">
+    <h2>Find the mistakes costing you money</h2>
+    <p>EdgeTrace is a free, private trading journal. Log or import your trades and get a ranked plan of what to fix – no sign-up.</p>
+    <a class="cta" href="https://homesh123.github.io/tradebook/#/overview">Start journaling free</a>
+  </aside>
+  <nav class="related" aria-label="Related guides"><h2>Related guides</h2><ul><li><a href="https://homesh123.github.io/tradebook/trading-journal/">A free trading journal that shows what your mistakes cost</a></li><li><a href="https://homesh123.github.io/tradebook/trading-mistakes/">Common trading mistakes and exactly how to fix them</a></li><li><a href="https://homesh123.github.io/tradebook/trading-metrics/">Trading performance metrics explained, with formulas and examples</a></li><li><a href="https://homesh123.github.io/tradebook/trading-psychology/">Trading psychology: measure your emotions instead of fighting them</a></li><li><a href="https://homesh123.github.io/tradebook/guide/">How to use a trading journal: step-by-step guide</a></li><li><a href="https://homesh123.github.io/tradebook/faq/">Frequently asked questions</a></li></ul></nav>
+</main>
+
+<footer class="foot">
+  <p><strong>EdgeTrace</strong> – Free trading journal that finds and fixes your trading mistakes. Free, no sign-up, your data stays in your browser.</p>
+  <p><a href="https://homesh123.github.io/tradebook/trading-journal/">Trading Journal</a> · <a href="https://homesh123.github.io/tradebook/trading-mistakes/">Trading Mistakes</a> · <a href="https://homesh123.github.io/tradebook/trading-metrics/">Metrics Glossary</a> · <a href="https://homesh123.github.io/tradebook/risk-management/">Risk Management</a> · <a href="https://homesh123.github.io/tradebook/trading-psychology/">Trading Psychology</a> · <a href="https://homesh123.github.io/tradebook/guide/">How-to Guide</a> · <a href="https://homesh123.github.io/tradebook/faq/">FAQ</a> · <a href="https://homesh123.github.io/tradebook/llms.txt">llms.txt</a></p>
+  <p class="muted">Educational content, not financial advice. Trading involves risk of loss.</p>
+</footer>
+</body>
+</html>
