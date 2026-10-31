@@ -1,0 +1,24 @@
+# EdgeTrace
+
+> EdgeTrace is a free, private trading journal for stocks, forex, futures and crypto. Log trades, tag mistakes and emotions, and get analytics that show what each mistake costs you and exactly how to fix it.
+
+EdgeTrace is a free web app (no account, data stored locally in the browser) at https://homesh123.github.io/tradebook/. It is built for retail and professional traders who want to find the behaviour that costs them money: it ranks mistakes by cost, measures discipline (0–100), detects tilt after losses, analyses results by emotion, setup, weekday and hour, and checks trades against the trader's own risk rules.
+
+## Guides
+- [A free trading journal that shows what your mistakes cost](https://homesh123.github.io/tradebook/trading-journal/): Free online trading journal for stocks, forex, futures and crypto. Tag mistakes and emotions, track risk rules and get a ranked plan to fix them.
+- [Common trading mistakes and exactly how to fix them](https://homesh123.github.io/tradebook/trading-mistakes/): FOMO, revenge trading, moved stops, overtrading, oversizing: the costliest trading mistakes, each with a rule, a fix and a prevention method.
+- [Trading performance metrics explained, with formulas and examples](https://homesh123.github.io/tradebook/trading-metrics/): Formulas and worked examples for profit factor, expectancy, R-multiple, win rate, risk:reward, max drawdown and Sharpe ratio.
+- [Trading risk management rules that keep you in the game](https://homesh123.github.io/tradebook/risk-management/): How to size positions, apply the 1% risk rule and set a daily loss limit, with formulas and examples for stocks, futures and forex.
+- [Trading psychology: measure your emotions instead of fighting them](https://homesh123.github.io/tradebook/trading-psychology/): How fear, greed, FOMO and frustration hurt results, how to spot tilt and revenge trading in your own data, and how to build measurable discipline.
+- [How to use a trading journal: step-by-step guide](https://homesh123.github.io/tradebook/guide/): Step-by-step: set risk rules, log or import trades (CSV, MT4/MT5), tag mistakes and emotions, and run a daily and weekly review routine.
+- [Frequently asked questions](https://homesh123.github.io/tradebook/faq/): Answers about EdgeTrace: cost, privacy, supported markets, MT5 and CSV import, how P&L and R-multiples are calculated, backups and mobile use.
+
+## App
+- [Open EdgeTrace](https://homesh123.github.io/tradebook/#/overview): the trading journal itself (JavaScript single-page app)
+- [Full text for LLMs](https://homesh123.github.io/tradebook/llms-full.txt): all guide content in one Markdown file
+
+## Key facts
+- Price: free. Account: not required. Storage: browser localStorage only; JSON backup/restore.
+- Markets: stocks, ETFs, options, futures, forex, crypto. Futures/forex via point-value multiplier or broker net P&L.
+- Import: CSV and MetaTrader 4/5 history (broker profit + commission + swap = net P&L). Export: CSV, JSON.
+- R-multiple = (exit − entry) ÷ (entry − stop), reversed for shorts. Discipline score = 60% mistake-free share + 40% plan adherence.

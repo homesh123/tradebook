@@ -1,0 +1,494 @@
+# EdgeTrace – full guide content
+
+> EdgeTrace is a free, private trading journal for stocks, forex, futures and crypto. Log trades, tag mistakes and emotions, and get analytics that show what each mistake costs you and exactly how to fix it.
+
+Source: https://homesh123.github.io/tradebook/ · Updated 2026-10-31
+
+---
+
+# A free trading journal that shows what your mistakes cost
+
+URL: https://homesh123.github.io/tradebook/trading-journal/
+
+EdgeTrace is a free trading journal that runs in your browser. You log each trade with the behaviour behind it – setup, mistakes, emotion and whether you followed your plan – and EdgeTrace calculates how much every mistake costs you, spots repeating patterns such as revenge trading or tilt, checks your risk rules and ranks what to fix first.
+
+## What is a trading journal?
+
+A trading journal is a record of every trade you take – entry, exit, size, stop loss and result – plus the reasons and emotions behind it. Reviewing it turns individual wins and losses into data, so you can see which setups make money and which habits lose it.
+
+Most traders do not lose because their strategy has no edge; they lose because of execution mistakes: chasing entries, moving stops, oversizing or revenge trading. A journal is the only reliable way to measure those mistakes.
+
+## Why do traders need a trading journal to become profitable?
+
+Because you cannot fix what you do not measure. A journal shows three things that memory hides:
+
+- Which mistakes repeat, and how much money each one has cost you.
+- Whether your trades without mistakes are profitable – if they are, discipline alone will make you profitable.
+- When you trade worst: after losses, in certain emotional states, on certain days or hours.
+
+## What does EdgeTrace do differently from a spreadsheet?
+
+A spreadsheet stores trades; EdgeTrace interprets them. It automatically:
+
+- Ranks every mistake by the money it cost and shows whether it is getting more or less frequent.
+- Draws your equity curve next to a "disciplined" curve – your P&L if you had skipped every trade with a mistake.
+- Detects tilt: how your win rate and mistake rate change on the trade after a loss.
+- Scores your discipline from 0 to 100 and tracks it over time.
+- Checks your own risk rules – max risk per trade, daily loss limit and max trades per day – and flags every break.
+- Writes a ranked action plan, with a concrete rule for each problem.
+
+## Which markets and brokers does EdgeTrace support?
+
+Any market where you can record an entry, exit and size: stocks, ETFs, options, futures, forex and crypto. Futures and forex are handled with a point-value multiplier (for example ES = 50, NQ = 20, one standard forex lot = 100,000) or by entering the exact net P&L from your broker.
+
+You can import trades from a CSV file or directly from a MetaTrader 4 / MetaTrader 5 account history report, and export everything to CSV or a full JSON backup.
+
+## Is EdgeTrace free and is my trading data private?
+
+Yes. EdgeTrace is free, needs no account and has no server: your trades are stored only in your own browser. Nothing is uploaded. Use the built-in backup to move your journal between devices.
+
+## How do I start journaling my trades?
+
+- Open EdgeTrace and set your starting balance and risk rules in Settings.
+- Log a trade (press N) or import a CSV / MT5 history file.
+- Tag the setup, any mistakes, your emotion and whether you followed your plan.
+- Review the Overview daily and Analytics weekly, and fix the top suggestion first.
+
+## FAQ
+
+**What is the best free trading journal?**
+
+The best free trading journal is one you will use after every trade and that turns your data into decisions. EdgeTrace is free, private (data stays in your browser) and focuses on behaviour: it ranks your mistakes by cost, detects tilt and gives you a prioritized fix plan.
+
+**Do I need to create an account to use EdgeTrace?**
+
+No. EdgeTrace works instantly in the browser with no sign-up. Your data is stored locally on your device.
+
+**Can I import trades from MetaTrader 5?**
+
+Yes. Export your account history from MT4 or MT5 as CSV and import it. EdgeTrace uses broker profit plus commission and swap as the exact net P&L and skips duplicate tickets.
+
+---
+
+# Common trading mistakes and exactly how to fix them
+
+URL: https://homesh123.github.io/tradebook/trading-mistakes/
+
+The most common trading mistakes are execution errors, not strategy errors: entering late out of FOMO, moving a stop loss, revenge trading after a loss, overtrading and risking too much per trade. Each one can be fixed with a specific rule. Below is every mistake EdgeTrace tracks, with the rule to follow, the action steps and how to prevent it.
+
+## FOMO
+
+- Rule: Wait for setup confirmation
+- Fix: Create a 3-point checklist and only enter if all points are true. Set alerts instead of chasing.
+- Prevention: Use limit orders at planned zones
+
+## Chased Entry
+
+- Rule: No market orders out of zone
+- Fix: Wait for pullback to entry zone. If price moves away, skip the trade.
+- Prevention: Predefine exact entry price range
+
+## Moved Stop
+
+- Rule: Stop loss is never moved
+- Fix: Accept the risk you defined. Moving stop is always emotional.
+- Prevention: Use hard stops or mentally commit before entry
+
+## Revenge Trade
+
+- Rule: Cooldown after loss
+- Fix: Mandatory 30-60 min break after any losing trade. No immediate re-entry.
+- Prevention: Set daily loss limit of 2% account
+
+## Overtrading
+
+- Rule: Quality over quantity
+- Fix: Max 2-3 A+ setups per day. Track trades taken vs setups met.
+- Prevention: End session after hitting trade limit
+
+## Ignored Plan
+
+- Rule: Follow playbook strictly
+- Fix: Review playbook before each trade. Grade plan adherence after every trade.
+- Prevention: Pre-trade checklist required
+
+## Early Entry
+
+- Rule: Wait for confirmation
+- Fix: Define specific confirmation signals. Don't anticipate breakouts.
+- Prevention: Use higher timeframe confirmation
+
+## Late Exit
+
+- Rule: Stick to exit plan
+- Fix: Set take profit orders at pre-defined levels. Trail only per rules.
+- Prevention: Review exit criteria before entry
+
+## Poor Risk Management
+
+- Rule: Risk defined before entry
+- Fix: Calculate position size from stop distance. Never risk >1% per trade.
+- Prevention: Use position size calculator
+
+## Early Exit
+
+- Rule: Let the plan play out
+- Fix: Exit only at your stop, target or a predefined invalidation. Scale out a portion if you must lock in profit.
+- Prevention: Set the take-profit order at entry and step away from the screen
+
+## Oversized Position
+
+- Rule: Size from the stop, not from conviction
+- Fix: Position size = (account × risk %) ÷ stop distance. Never exceed your max risk %.
+- Prevention: Use the live risk preview in the trade form before every entry
+
+## No Stop Loss
+
+- Rule: No stop, no trade
+- Fix: Define the invalidation level before entering and place a hard stop order immediately.
+- Prevention: Make "stop placed" item #1 on your pre-trade checklist
+
+## Emotional
+
+- Rule: Trade only in optimal state
+- Fix: Rate readiness 1-10 before trading. Skip if below 7.
+- Prevention: Morning routine check-in
+
+## How do I find out which trading mistakes cost me the most?
+
+Tag every trade with the mistakes you made – honestly, even small ones – then add up the losses on trades with each tag. That number is the cost of the mistake. EdgeTrace does this automatically and ranks mistakes from most to least expensive, so you always know which habit to fix first.
+
+## Why do trading mistakes repeat?
+
+Mistakes repeat because they are emotional responses to the same triggers – a missed move, a loss, a winning streak. They also chain together: a FOMO entry is often chased, and a chased entry often leads to a moved stop. Tracking which mistakes occur together lets you stop the chain at the first link.
+
+## What is the fastest way to stop making trading mistakes?
+
+- Work on one mistake at a time – the one that costs the most.
+- Turn it into a written rule you can check before every trade.
+- Use a pre-trade checklist; if any item is unchecked, do not trade.
+- Review every trade the same day and tag mistakes while memory is fresh.
+- Measure progress: the mistake should appear less often in your recent trades than in older ones.
+
+## FAQ
+
+**What is the most common trading mistake?**
+
+FOMO (fear of missing out) and the chased entry it causes are among the most common. The fix is to define your entry zone in advance, use limit orders or alerts, and skip the trade if price has already left the zone.
+
+**What is revenge trading?**
+
+Revenge trading is taking an impulsive trade right after a loss to "win the money back". It usually breaks your plan and position-size rules. Fix it with a mandatory 30–60 minute break after any loss and a hard daily loss limit.
+
+**Should I ever move my stop loss?**
+
+Never move a stop loss further from your entry. Doing so increases the risk you agreed to and turns small losses into large ones. Trailing a stop toward profit is fine only if it is part of your written plan.
+
+---
+
+# Trading performance metrics explained, with formulas and examples
+
+URL: https://homesh123.github.io/tradebook/trading-metrics/
+
+The trading metrics that matter most are expectancy (average profit per trade), profit factor (gross profit ÷ gross loss), R-multiple (result measured in units of risk) and maximum drawdown (largest peak-to-trough fall). Together they tell you whether you have an edge, how big it is and how painful it is to trade.
+
+## Win rate
+
+The percentage of closed trades that made money.
+
+Formula: `Win rate = winning trades ÷ closed trades × 100`
+
+Example: 17 winners out of 30 trades = 56.7% win rate. A high win rate alone does not mean profitability – it depends on how big wins are compared with losses.
+
+## Profit factor
+
+Gross profit divided by gross loss. Above 1.0 is profitable; 1.5 is solid; 2.0 or more is excellent.
+
+Formula: `Profit factor = sum of winning trades ÷ |sum of losing trades|`
+
+Example: $3,000 of wins and $1,500 of losses gives a profit factor of 2.0.
+
+## Expectancy
+
+The average amount you can expect to win or lose per trade. Positive expectancy means you have an edge.
+
+Formula: `Expectancy = (win rate × average win) − (loss rate × average loss)`
+
+Example: 55% × $165 − 45% × $61 = $63.30 per trade.
+
+## R-multiple
+
+The result of a trade measured in units of the risk you planned (R). +2R means you made twice what you risked; −1R is a full planned loss.
+
+Formula: `R = (exit − entry) ÷ (entry − stop loss), reversed for short trades`
+
+Example: Long at 100, stop 98 (risk 2), exit 106: R = 6 ÷ 2 = +3R. A loss bigger than −1R means the stop was moved, ignored or slipped.
+
+## Risk:reward ratio (planned R:R)
+
+Distance to your target compared with distance to your stop, decided before entry.
+
+Formula: `R:R = |target − entry| ÷ |entry − stop|`
+
+Example: Entry 50, stop 49, target 53 = 1:3. With 1:3 you are profitable even at a 30% win rate.
+
+## Average win / average loss
+
+How large winning trades are relative to losing trades.
+
+Formula: `Payoff ratio = average win ÷ average loss`
+
+Example: $165 average win ÷ $61 average loss = 2.7×.
+
+## Maximum drawdown
+
+The largest drop of your equity from a peak to a later low. It measures how painful your strategy is to trade.
+
+Formula: `Max drawdown = max(peak equity − subsequent equity)`
+
+Example: Equity rises to $12,000, falls to $10,800, then recovers: drawdown = $1,200 (10%).
+
+## Recovery factor
+
+Net profit relative to the worst drawdown. Higher means profits comfortably outweigh the pain.
+
+Formula: `Recovery factor = net profit ÷ max drawdown`
+
+Example: $6,000 net profit with a $1,500 max drawdown = 4.0.
+
+## Sharpe ratio (per trade)
+
+Average trade result divided by the variability of results. Higher means smoother, more consistent returns.
+
+Formula: `Sharpe = mean trade P&L ÷ standard deviation of trade P&L`
+
+Example: Mean $67, standard deviation $150 → 0.45.
+
+## Green-day percentage
+
+The share of trading days that ended with a net profit – a measure of consistency.
+
+Formula: `Green days = profitable days ÷ trading days × 100`
+
+Example: 17 green days out of 30 = 57%.
+
+## Position size
+
+How many shares, contracts or lots to trade so that hitting your stop loses exactly your planned risk.
+
+Formula: `Size = (account × risk %) ÷ (stop distance × point value)`
+
+Example: $10,000 account, 1% risk ($100), stop $2 away on a stock: 50 shares.
+
+## Discipline score
+
+EdgeTrace’s 0–100 measure of how consistently you follow your process: 60% share of mistake-free trades plus 40% plan adherence.
+
+Formula: `Score = (clean-trade share × 0.6 + plan-followed share × 0.4) × 100`
+
+Example: 16 of 30 clean trades and plan followed on 16 of 30 → 53 ("inconsistent").
+
+## Which trading metric matters most?
+
+Expectancy matters most, because it combines win rate and the size of wins and losses into one number: the average profit per trade. A strategy with positive expectancy makes money over enough trades; negative expectancy loses money no matter how often it wins.
+
+## Is a high win rate good in trading?
+
+Not by itself. A 90% win rate with tiny wins and occasional huge losses loses money, while a 35% win rate with 1:3 risk:reward is profitable. Always read win rate together with average win ÷ average loss, or simply look at expectancy and profit factor.
+
+## FAQ
+
+**What is a good profit factor in trading?**
+
+A profit factor above 1.0 means a strategy is profitable. Around 1.5 is solid, 2.0 or more is excellent, and anything consistently above 3 over many trades is exceptional and worth checking for overfitting or small sample size.
+
+**How do you calculate expectancy in trading?**
+
+Expectancy = (win rate × average win) − (loss rate × average loss). For example, with a 55% win rate, $165 average win and $61 average loss: 0.55 × 165 − 0.45 × 61 = $63.30 expected per trade.
+
+**What does R-multiple mean?**
+
+R-multiple expresses a trade’s result in units of the risk you planned. If you risk $100 and make $300, that trade is +3R. Measuring in R lets you compare trades of different sizes and spot losses that exceeded your plan.
+
+---
+
+# Trading risk management rules that keep you in the game
+
+URL: https://homesh123.github.io/tradebook/risk-management/
+
+Good risk management means deciding before every trade how much you can lose, sizing the position so a stop-out costs exactly that amount, and stopping for the day when a pre-set loss limit is reached. Most professional traders risk 0.5%–2% of their account per trade.
+
+## How much should I risk per trade?
+
+Most professional traders risk between 0.5% and 2% of their account on a single trade; 1% is the most common rule. At 1% risk, ten losses in a row cost about 10% of the account – painful but survivable. At 10% risk, the same streak would cost about 65%.
+
+## How do I calculate position size?
+
+Position size = (account balance × risk %) ÷ (stop distance × point value).
+
+- Stocks: $20,000 account, 1% risk = $200. Entry $50, stop $48 (distance $2). Size = 200 ÷ 2 = 100 shares.
+- Futures (ES, $50 per point): $50,000 account, 1% = $500. Stop 5 points away = $250 per contract. Size = 2 contracts.
+- Forex (EUR/USD, $10 per pip per standard lot): $10,000 account, 1% = $100. Stop 20 pips = $200 per lot. Size = 0.5 lots.
+
+## What is a daily loss limit and why use one?
+
+A daily loss limit is the maximum you allow yourself to lose in one day; when you reach it, you stop trading until tomorrow. It protects you from tilt – the spiral of emotional trades after losses – which is where most account-destroying days come from. A common starting point is 2–3× your per-trade risk.
+
+## Why limit the number of trades per day?
+
+A maximum number of trades per day stops overtrading: forcing low-quality setups out of boredom or to recover losses. Pick a number that matches how many A+ setups your strategy realistically produces in a session, typically 2–5 for day traders.
+
+## How does EdgeTrace enforce risk rules?
+
+- The trade form shows risk in $ and as % of your account as you type, and warns when it exceeds your max risk.
+- The Overview tracks today’s trades and loss against your limits and shows a "Stop trading for today" banner when one is hit.
+- Analytics counts every day you broke the loss limit or max trades, every oversized trade and every trade without a stop.
+
+## FAQ
+
+**What is the 1% rule in trading?**
+
+The 1% rule means never risking more than 1% of your account on a single trade. With a $10,000 account the maximum loss per trade is $100, and position size is chosen so that hitting the stop loss costs exactly that.
+
+**What is a good daily loss limit?**
+
+A common daily loss limit is 2–3 times your per-trade risk, for example 2–3% of the account if you risk 1% per trade. The exact number matters less than stopping every single time you reach it.
+
+**Should every trade have a stop loss?**
+
+Yes. Without a stop loss you cannot size the position, measure R-multiples or cap the loss. Decide the stop before entry and place it as a real order.
+
+---
+
+# Trading psychology: measure your emotions instead of fighting them
+
+URL: https://homesh123.github.io/tradebook/trading-psychology/
+
+Trading psychology is how your emotional state changes your decisions. The practical way to improve it is to measure it: record how you felt on every trade, then compare results by emotion, and compare the trade after a loss with the trade after a win. The data usually shows a clear pattern you can build rules around.
+
+## How do emotions affect trading performance?
+
+Calm, patient and focused states tend to produce planned trades; anxious, greedy, frustrated or angry states produce impulsive ones – chased entries, oversized positions and moved stops. When traders tag emotions consistently, trades taken while angry or greedy almost always have a negative average result.
+
+## What is tilt in trading and how do I detect it?
+
+Tilt is a state where losses trigger emotional, rule-breaking trades. You can detect it in a journal by comparing the trade right after a loss with the trade right after a win: if win rate drops or the share of trades with mistakes rises after losses, you trade on tilt. EdgeTrace calculates this automatically under Behaviour Patterns.
+
+## How can I become a more disciplined trader?
+
+- Write your plan before the session: setups, max risk, daily loss limit, max trades.
+- Rate your emotional state before trading; trade smaller or not at all when it is poor.
+- Use a mandatory break after every loss.
+- Grade execution (A+ to D) separately from outcome – a well-executed losing trade is a good trade.
+- Track a discipline score over time and aim for 80%+ mistake-free trades.
+
+## What is the "discipline gap"?
+
+The discipline gap is the difference between your actual P&L and the P&L you would have made by skipping every trade where you made a mistake. When it is large, your strategy already works – the fastest path to profitability is following it, not finding a new one.
+
+## FAQ
+
+**How do I stop revenge trading?**
+
+Make a rule that you take a 30–60 minute break after any losing trade and stop for the day at a fixed daily loss limit. Track the trade after each loss in your journal so you can see whether the rule is working.
+
+**How do I deal with FOMO in trading?**
+
+Define entry zones before the session and set alerts instead of watching every tick. If price leaves your zone, the trade is gone – there will always be another setup. Tag FOMO trades to see what they really cost.
+
+**Does journaling emotions really help trading?**
+
+Yes, because it turns vague feelings into data. Once you can see that, for example, trades taken while frustrated lose $60 on average, it becomes much easier to follow a rule to sit out in that state.
+
+---
+
+# How to use a trading journal: step-by-step guide
+
+URL: https://homesh123.github.io/tradebook/guide/
+
+To use a trading journal well: set your risk rules, log every trade right after entry, tag mistakes and emotions right after exit, review daily against your limits, and review weekly to choose one mistake to fix. This guide shows each step in EdgeTrace.
+1. **Set your account and risk rules.** Open Settings and enter your starting balance, maximum risk per trade (for example 1%), daily loss limit and maximum trades per day.
+2. **Log or import your trades.** Press N or click New Trade to log a trade, or import a CSV file or MT4/MT5 account history from Import & Export. Leave the exit empty while a trade is open.
+3. **Tag the behaviour behind each trade.** After the exit, tag the setup, any mistakes, your emotion, whether you followed your plan and an execution grade, and write one lesson.
+4. **Check your guardrails daily.** Before and during the session, check the Overview for today’s P&L, trades taken and loss limit. Stop when the "Stop trading for today" banner appears.
+5. **Review weekly and fix one thing.** Open Analytics, read the Coach’s Action Plan and the Mistakes Over Time chart, and pick the top mistake as your focus for the next 20 trades.
+
+## What should I record for every trade?
+
+- Symbol, date, entry time, side (long/short), entry, exit, quantity and fees.
+- Stop loss and take profit – required for risk, R-multiple and planned risk:reward.
+- Point value for futures/forex, or the broker’s net P&L.
+- Setup, mistakes, emotion, whether you followed your plan and an execution grade.
+- A short note: why you took it and what you would do differently.
+
+## How do I import trades from MT4 or MT5?
+
+In MetaTrader, open the account history, right-click and save it as a report, then export or copy it as CSV with the columns Ticket, Open Time, Type, Size, Item, Price, S/L, T/P, Close Time, Price, Commission, Swap and Profit. In EdgeTrace, open Import & Export and drop the file. Duplicate tickets are skipped, so you can re-import a growing history safely.
+
+## What CSV format does EdgeTrace accept?
+
+Columns (any order): date, time, pair or symbol, side, quantity, multiplier, entry, exit, stopLoss, takeProfit, fees, netPnl, grade, notes, tags, mistakes, emotions, followedPlan, screenshot. Separate multiple tags or mistakes with a vertical bar (|). A ready-made template can be downloaded in the app.
+
+## How often should I review my trading journal?
+
+Briefly after every trade (to tag it honestly), at the end of each day (to check rules and write one lesson) and in depth once a week (to choose the next mistake to fix and confirm the previous one is fading).
+
+## FAQ
+
+**How long does it take to journal a trade?**
+
+About 30–60 seconds with EdgeTrace: most fields are taps on predefined chips, and the risk, R:R and P&L are calculated for you.
+
+**Can I use EdgeTrace on my phone?**
+
+Yes. The layout adapts to phones with a bottom tab bar. Because data is stored per browser, use Backup and Restore to move your journal between desktop and phone.
+
+---
+
+# Frequently asked questions
+
+URL: https://homesh123.github.io/tradebook/faq/
+
+Quick answers about using EdgeTrace, how it calculates your statistics and how your data is stored.
+
+## FAQ
+
+**Is EdgeTrace free?**
+
+Yes. EdgeTrace is completely free and requires no account.
+
+**Where is my trading data stored?**
+
+Only in your own browser’s local storage. EdgeTrace has no server and never uploads your trades. Clearing browser data deletes them, so download a backup regularly.
+
+**Which markets can I journal?**
+
+Stocks, ETFs, options, futures, forex and crypto – anything with an entry, exit and size. Use the point-value multiplier for futures and forex, or enter the broker’s net P&L.
+
+**How is P&L calculated?**
+
+P&L = (exit − entry) × quantity × multiplier − fees, reversed for short trades. If you enter the broker’s net P&L, that exact value is used instead.
+
+**How is the R-multiple calculated?**
+
+R = (exit − entry) ÷ (entry − stop loss), reversed for shorts. It is price based, so it stays correct for any contract size.
+
+**Can I import from MetaTrader 4 or 5?**
+
+Yes. Import an MT4/MT5 history CSV; broker profit plus commission and swap is used as net P&L and duplicate tickets are skipped.
+
+**Can I export my data?**
+
+Yes – as CSV for spreadsheets, or as a JSON backup that includes trades, settings and custom tags and can be restored on another device.
+
+**What is the discipline score?**
+
+A 0–100 score combining the share of mistake-free trades (60%) and plan adherence (40%). 75+ is disciplined, 50–74 inconsistent, below 50 undisciplined.
+
+**Why don’t I see suggestions yet?**
+
+You need at least three closed trades. Suggestions improve as you tag mistakes, emotions and plan adherence consistently.
+
+**Does EdgeTrace work offline?**
+
+Once loaded, the app runs in your browser and stores data locally, so journaling does not depend on a server.

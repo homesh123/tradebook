@@ -2,42 +2,85 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>EdgeTrace – Free Trading Journal to Fix Your Mistakes</title>
+    <meta name="description" content="Free, private trading journal for stocks, forex, futures and crypto. Tag mistakes and emotions, see what each one costs you and how to fix it." />
+    <link rel="canonical" href="https://homesh123.github.io/tradebook/" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="application-name" content="EdgeTrace" />
+    <meta name="apple-mobile-web-app-title" content="EdgeTrace" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F9F9F9" media="(prefers-color-scheme: light)" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="EdgeTrace" />
+    <meta property="og:title" content="EdgeTrace – Free Trading Journal to Find & Fix Your Trading Mistakes" />
+    <meta property="og:description" content="Log trades, tag mistakes and emotions, and see exactly what each mistake costs you. Free, private, no sign-up." />
+    <meta property="og:url" content="https://homesh123.github.io/tradebook/" />
+    <meta property="og:image" content="https://homesh123.github.io/tradebook/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="EdgeTrace trading journal analytics: discipline score, mistake costs and equity curve" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="EdgeTrace – Free Trading Journal to Find & Fix Your Trading Mistakes" />
+    <meta name="twitter:description" content="Log trades, tag mistakes and emotions, and see exactly what each mistake costs you. Free, private, no sign-up." />
+    <meta name="twitter:image" content="https://homesh123.github.io/tradebook/og-image.png" />
+
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="sitemap" type="application/xml" href="%PUBLIC_URL%/sitemap.xml" />
+    <link rel="alternate" type="text/plain" title="LLM summary" href="%PUBLIC_URL%/llms.txt" />
+    <!--seo-jsonld:start-->
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"EdgeTrace","alternateName":"EdgeTrace Trading Journal","url":"https://homesh123.github.io/tradebook/","description":"EdgeTrace is a free, private trading journal for stocks, forex, futures and crypto. Log trades, tag mistakes and emotions, and get analytics that show what each mistake costs you and exactly how to fix it.","applicationCategory":"FinanceApplication","applicationSubCategory":"Trading journal","operatingSystem":"Any (web browser)","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://homesh123.github.io/tradebook/og-image.png","screenshot":"https://homesh123.github.io/tradebook/og-image.png","featureList":["Trade journal for stocks, forex, futures and crypto","Mistake tracking ranked by cost","Emotion and tilt analysis","Discipline score and coaching suggestions","Risk rules: max risk per trade, daily loss limit, max trades per day","Equity curve vs disciplined equity curve","CSV and MetaTrader 4/5 import, CSV export and JSON backup","Private: data stored only in your browser"],"publisher":{"@type":"Organization","name":"EdgeTrace","url":"https://homesh123.github.io/tradebook/","logo":"https://homesh123.github.io/tradebook/logo512.png"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"EdgeTrace","url":"https://homesh123.github.io/tradebook/","description":"EdgeTrace is a free, private trading journal for stocks, forex, futures and crypto. Log trades, tag mistakes and emotions, and get analytics that show what each mistake costs you and exactly how to fix it.","inLanguage":"en","publisher":{"@type":"Organization","name":"EdgeTrace","url":"https://homesh123.github.io/tradebook/","logo":"https://homesh123.github.io/tradebook/logo512.png"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the best free trading journal?","acceptedAnswer":{"@type":"Answer","text":"The best free trading journal is one you will use after every trade and that turns your data into decisions. EdgeTrace is free, private (data stays in your browser) and focuses on behaviour: it ranks your mistakes by cost, detects tilt and gives you a prioritized fix plan."}},{"@type":"Question","name":"Do I need to create an account to use EdgeTrace?","acceptedAnswer":{"@type":"Answer","text":"No. EdgeTrace works instantly in the browser with no sign-up. Your data is stored locally on your device."}},{"@type":"Question","name":"Can I import trades from MetaTrader 5?","acceptedAnswer":{"@type":"Answer","text":"Yes. Export your account history from MT4 or MT5 as CSV and import it. EdgeTrace uses broker profit plus commission and swap as the exact net P&L and skips duplicate tickets."}},{"@type":"Question","name":"Is EdgeTrace free?","acceptedAnswer":{"@type":"Answer","text":"Yes. EdgeTrace is completely free and requires no account."}},{"@type":"Question","name":"Where is my trading data stored?","acceptedAnswer":{"@type":"Answer","text":"Only in your own browser’s local storage. EdgeTrace has no server and never uploads your trades. Clearing browser data deletes them, so download a backup regularly."}},{"@type":"Question","name":"Which markets can I journal?","acceptedAnswer":{"@type":"Answer","text":"Stocks, ETFs, options, futures, forex and crypto – anything with an entry, exit and size. Use the point-value multiplier for futures and forex, or enter the broker’s net P&L."}},{"@type":"Question","name":"How is P&L calculated?","acceptedAnswer":{"@type":"Answer","text":"P&L = (exit − entry) × quantity × multiplier − fees, reversed for short trades. If you enter the broker’s net P&L, that exact value is used instead."}}]}</script>
+    <!--seo-jsonld:end-->
+    <style>
+      /* Crawlable summary shown until the app mounts (React replaces #root's content). */
+      .seo-prerender { max-width: 760px; margin: 0 auto; padding: 32px 20px; font: 15px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Segoe UI", Roboto, sans-serif; color: #1d1d1f; }
+      .seo-prerender h1 { font-size: 28px; line-height: 1.2; letter-spacing: -0.02em; }
+      .seo-prerender h2 { font-size: 19px; margin-top: 28px; }
+      .seo-prerender h3 { font-size: 15px; margin: 16px 0 4px; }
+      .seo-prerender a { color: #007aff; }
+      .seo-prerender h1, .seo-prerender h2 { font-weight: 700; } .seo-prerender h3 { font-weight: 600; }
+      .seo-prerender ul { list-style: disc; padding-left: 22px; } .seo-prerender p, .seo-prerender li { margin: 6px 0; }
+      .noscript { padding: 12px 20px; text-align: center; font: 14px -apple-system, sans-serif; background: #007aff; color: #fff; }
+      @media (prefers-color-scheme: dark) { .seo-prerender { color: #f5f5f7; } }
+      html.dark .seo-prerender { color: #f5f5f7; }
+    </style>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <noscript><p class="noscript">EdgeTrace is a JavaScript app – enable JavaScript to use the journal, or read the <a style="color:#fff;text-decoration:underline" href="https://homesh123.github.io/tradebook/trading-journal/">trading journal guides</a>.</p></noscript>
+    <div id="root"><!--seo-content:start-->
+<div class="seo-prerender">
+  <header><strong>EdgeTrace</strong> · Trading Journal</header>
+  <main>
+    <h1>EdgeTrace – free trading journal that finds and fixes your trading mistakes</h1>
+    <p>EdgeTrace is a free, private trading journal for stocks, forex, futures and crypto. Log trades, tag mistakes and emotions, and get analytics that show what each mistake costs you and exactly how to fix it.</p>
+    <h2>What EdgeTrace does</h2>
+    <ul>
+      <li>Ranks every trading mistake by how much money it cost you, with a rule and fix for each.</li>
+      <li>Shows your equity curve next to a "disciplined" curve: your P&amp;L if you had skipped every mistake trade.</li>
+      <li>Detects tilt and revenge trading by comparing the trade after a loss with the trade after a win.</li>
+      <li>Analyses results by emotion, setup, day of week and entry hour.</li>
+      <li>Enforces your risk rules: max risk per trade, daily loss limit and max trades per day.</li>
+      <li>Imports CSV and MetaTrader 4/5 history; exports CSV and JSON backups. Free, no sign-up, private.</li>
+    </ul>
+    <h2>Guides</h2>
+    <ul><li><a href="https://homesh123.github.io/tradebook/trading-journal/">A free trading journal that shows what your mistakes cost</a></li><li><a href="https://homesh123.github.io/tradebook/trading-mistakes/">Common trading mistakes and exactly how to fix them</a></li><li><a href="https://homesh123.github.io/tradebook/trading-metrics/">Trading performance metrics explained, with formulas and examples</a></li><li><a href="https://homesh123.github.io/tradebook/risk-management/">Trading risk management rules that keep you in the game</a></li><li><a href="https://homesh123.github.io/tradebook/trading-psychology/">Trading psychology: measure your emotions instead of fighting them</a></li><li><a href="https://homesh123.github.io/tradebook/guide/">How to use a trading journal: step-by-step guide</a></li><li><a href="https://homesh123.github.io/tradebook/faq/">Frequently asked questions</a></li></ul>
+    <h2>Frequently asked questions</h2>
+    <h3>What is the best free trading journal?</h3><p>The best free trading journal is one you will use after every trade and that turns your data into decisions. EdgeTrace is free, private (data stays in your browser) and focuses on behaviour: it ranks your mistakes by cost, detects tilt and gives you a prioritized fix plan.</p>
+    <h3>Do I need to create an account to use EdgeTrace?</h3><p>No. EdgeTrace works instantly in the browser with no sign-up. Your data is stored locally on your device.</p>
+    <h3>Can I import trades from MetaTrader 5?</h3><p>Yes. Export your account history from MT4 or MT5 as CSV and import it. EdgeTrace uses broker profit plus commission and swap as the exact net P&amp;L and skips duplicate tickets.</p>
+    <h3>Is EdgeTrace free?</h3><p>Yes. EdgeTrace is completely free and requires no account.</p>
+    <h3>Where is my trading data stored?</h3><p>Only in your own browser’s local storage. EdgeTrace has no server and never uploads your trades. Clearing browser data deletes them, so download a backup regularly.</p>
+    <h3>Which markets can I journal?</h3><p>Stocks, ETFs, options, futures, forex and crypto – anything with an entry, exit and size. Use the point-value multiplier for futures and forex, or enter the broker’s net P&amp;L.</p>
+    <h3>How is P&amp;L calculated?</h3><p>P&amp;L = (exit − entry) × quantity × multiplier − fees, reversed for short trades. If you enter the broker’s net P&amp;L, that exact value is used instead.</p>
+    <p>Loading the app… If nothing happens, please enable JavaScript.</p>
+  </main>
+</div><!--seo-content:end--></div>
   </body>
 </html>
